@@ -1,0 +1,349 @@
+TDD
+
+Zona 01
+Nombre: La Ciudadela
+Tono: Morado (psicología → nostalgia + misterio suave)
+Tema: Infancia
+Estructura Sub-zonas (pantallas)
+
+& INFORMACION IMPORTANTE PARA LA LECTURA DEL TDD &
+Toda texto que este entre de &""&, //""//, @""@, !""!.
+Se considera como notas de seguimiento para saber detalles 
+del desarrollo de cada parte del proyecto.
+
+DETALLES TECNICOS GENERALES
+
+A. Esenas Sun-zonas
+Estructura:
+    Ecena Sub-Zona
+    └─Node2D (Root)
+        ├─ TileMap
+        ├─ Player
+        ├─ Camera2D
+        ├─ YSort (para profundidad)
+        ├─ NavigationRegion2D (opcional)
+        ├─ UI
+        └─ Audio
+
+
+B. Esenas NPCs
+PROPOSITO
+    El sistema de NPC permite:
+        - Dar vida al entorno
+        - Entregar narrativa (diálogos)
+        - Reaccionar al jugador
+        - Ejecutar comportamientos simples (movimiento y estados)
+
+NPCs_EN_GENERAL
+    ├─ COMPONENTES  //Terminado//
+    ├─ CONFIGURACIÓN  &Nota: Falta RUTA_CON_ESTACIONES &
+    ├─ COMPORTAMIENTO  &Nota: Falta Definir Movimiento &
+    ├─ INTERACCIÓN
+    ├─ EVENTOS | SEÑALES
+    ├─ ESTADOS
+    └─ SCRIPT | CODE
+
+COMPONEENTES
+    Estructura de la Escena //Terminado
+        CharacterBody2D
+            ├─ AnimatedSprite2D
+            ├─ CollisionShape2D
+            └─ Area2D (Interaction)
+                └─ CollisionShape2D
+
+CONFIGURACIÓN (Datos)
+    NPC_DATA:  &Nota: Datos para Json o Resources &
+        id: String
+
+        movimiento:
+            tipo: [ESTATICO, RUTA_IDA_VUELTA, RUTA_IDA, RUTA_CON_ESTACIONES, ALEATORIO, BUCLE]
+            velocidad: [250, 200, 150]
+            Puntos_ruta: [A - B, A - B - A, A - B - C, A - B - C - A]
+            tiempo_pausa: [bool]
+    
+        dialogo:
+            tipo: [dialogo_Unico, dialogo_varible, dialogo_condicional, dialogo_ramificado]
+            dialogo_id: String
+            lista_dialogos: [] (Opcional)  &Nota:Es una lista pensada para orden, progreso o lógica a lo largo de la partida &
+            condicion: {} (Opcional)
+
+        visual:
+            sprite_id: String
+            animaciones: [espera, arriba, abajo, derecha, izquiesda, hablar]
+
+
+    Movimiento:  &Nota: Falta RUTA_CON_ESTACIONES &
+        -Tipo_movimiento:
+            - ESTATICO  //Terminado//
+            - RUTA_IDA_VUELTA  //Terminado//
+            - RUTA_IDA  //Terminado//
+            - RUTA_CON_ESTACIONES  @Pendiente@
+            - ALEATORIO  //Terminado//
+            - BUCLE  //Terminado//
+
+        - velocidad [250,200,150]  //Terminado//
+        - puntos_ruta [A,B,C,D]  //Terminado//
+        - pausa_en_puntos (bool)  //Terminado//
+        - tiempo_pausa (1seg - 5seg)  //Terminado//
+
+    Tipo Dialogo:
+        - dialogo_id
+        - dialogo_Unico !Falta!
+        - dialogo_varible  !Falta! &Nota:Es una lista pensada para dar variedad al mismo momento &
+        - dialogo_condicional (variables externas) !Falta!
+        - dialogo_ramificado (respuestas)  !Falta!
+
+    Visual:
+        - sprite_id (Xpx x Xpx) 22 @Pentiente@
+        - animaciones @Pendiente@ &Animaciones de 5 fotogramas&
+
+COMPORTAMIENTO &Nota: Falta Definir Movimiento &
+    Sistema de Movimiento:
+        Logica Base:
+            Input:
+                Tipo_movimiento
+                Puntos_ruta &Nota: Depente de Tipo_movimiento&
+                Velocidad
+
+            Proceso:
+                Seleccionar punto de objetivo
+                Calcular direccion
+                Mover con X velocidad * delta
+                Detectar llegada
+            
+            Output:
+                Nueva posicion
+
+        Reglas:
+            Si tipo ==
+
+    Dialogos:
+        Al Interactuar:
+        Input: tecla_interactuar = "E"
+
+        Si "dialogo_Unico" se ejecuta
+            Responde con un dialogo unico de npc
+        
+        Si "dialogo_varible" se ejecuta
+            Responde con random(Lista_De_Dialogos_ZonaX)
+
+        Si se complen condiciones
+            Se ejecuta "dialogo_condicional"
+
+        Cuando (respuestas) se elegi
+            dialogo ramificado
+
+INTERACCIÓN 
+    Input: tecla_interactuar = "E" //Terminado//
+
+    condicion: @PENDIENTE
+        -Player dentro de Area2D
+        -Señal = True
+
+    Resultado:
+        -NPC cambia de ESTADO de Andar|Cambinar a Espera|Idle
+        -Cambia la orientacion para mirar al Player
+        -Lanza dialogo
+
+EVENTOS | SEÑALES
+    interactuado (npc_id)
+    dialogo_iniciado (dialogo_id)
+    Guardar_Evento_Dialogo (Memoria_NPC)
+    Guardar_respuesta (Memoria_NPC)
+    dialogo_finalizado()
+
+ESTADOS
+    Tipos de Estados:
+        ESPERA    = Quieto
+        CAMINAR   = Movimiento activo
+        PAUSA     = Detenido temporalmente
+        INTERACTUAR  = En interacción con el jugador
+
+    Transiciones:
+        ESPERA → CAMINAR
+        CAMINAR → PAUSA
+        PAUSA → CAMINAR
+        (Cualquier Estado) → INTERACTUAR
+        INTERACTUAR → ESPERA &Nota: ESPERA podria durar 2 seg antes de cambiar de estado&
+        
+SCRIPT | CODE @PENDIENTE
+    `npc_base.gd`
+    `npc_dialogo.gd`
+    `npc_estado.gd`
+
+
+📦 C. OBJETOS INTERACTIVOS
+
+Tipos obligatorios:
+
+1. Cofres
+
+Estructura:
+
+Ecena Chest = StaticBody2D
+    ├─ Sprite2D
+    ├─ CollisionShape2D
+    └─ Area2D (Interactuar)
+
+Función: Dar objetos como.
+1. Objetos claves para la historia.
+2. Objetos Consumibles
+3. Armas y Armaduras
+4. objetos de Misiones Principales y Secundarias
+5...
+
+
+2. Puertas / Transiciones
+
+Estructura:
+
+Puertas / Transiciones = Area2D
+    └─ CollisionShape2D
+
+Función:
+Cambio de escena
+Bloqueo por progreso
+
+
+3. Objetos recolectables
+
+Estructura:
+
+Colectaton = Area2D
+    ├─ Sprite2D
+    └─ CollisionShape2D
+
+
+4. Objetos del entorno (IMPORTANTE)
+
+Ejemplos: Decorado Interactuable
+* Pelota
+* Columpio
+* Banco
+* Dibujo en el suelo
+
+
+
+D. TRIGGERS (LO MÁS IMPORTANTE)
+
+Este sistema es lo que hará que tu narrativa funcione.
+
+Tipos:
+1. Trigger de evento
+2. Trigger de diálogo automático
+3. Trigger de cambio de estado
+4. Trigger de escena
+
+Estructura:
+
+trigger = Area2D
+    └─ CollisionShape2D
+
+Script:
+`trigger_evento.gd`
+
+
+
+E. ENEMIGOS (PROTOTIPO SIMPLE)
+
+Aunque Zona 1 es inocente, puedes meterlos como:
+“Juego infantil” o “imaginación”
+
+Tipos:
+1. Enemigo básico (patrulla)
+2. Enemigo pasivo (solo reacciona)
+3. Enemigo trigger (inicia combate)
+
+Estructura:
+
+enemy = CharacterBody2D
+    ├─ Sprite2D
+    ├─ CollisionShape2D
+    └─ Area2D (detección)
+
+Scripts:
+`enemy_base.gd`
+`enemy_detection.gd`
+
+
+
+F. UI (mínima para prototipo)
+
+Estructura:
+
+"ui" = CanvasLayer
+    ├─ DialogBox
+    ├─ InteractionIcon
+    └─ FadeTransition
+
+
+
+G. AUDIO
+
+
+```id="audio"
+Node
+├── AudioStreamPlayer (música)
+└── AudioStreamPlayer2D (efectos)
+
+=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/
+
+2. SUB-ZONAS DE LA CIUDADELA (IMPLEMENTACIÓN)
+
+
+Sub Zonas de la Ciudadela:
+Complejo A, B, C,Parque, Torre Ascenso, Paso al Jardi,
+Paso a la terminal
+
+Nodos clave:
+NPCs
+Objetos interactivos
+Chest
+
+Introduces: Esta sub zonas seran intruduccion a.
+Diálogos
+Interacción
+Lore ambiental
+Batallas
+
+Objetivos de las Sub-Zonas
+
+(AUN POR PENDIENTE)
+
+
+#ERRORES A EVITAR (CRÍTICO)#
+
+Error 1: Crear nodos únicos para todo
+
+✔ Solución:
+    Todo debe heredar de:
+        `interactuable_base.gd`
+        `npc_base.gd`
+        `trigger_base.gd`
+
+
+Error 2: No separar lógica de escena
+
+✔ Solución:
+    Scripts reutilizables
+    Datos externos (JSON o Resources)
+
+Error 3: Meter combate muy temprano
+
+✔ Tu concepto dice:
+> la historia se cuenta por entorno
+👉 Entonces:
+Zona 1 = 80% interacción / 20% sistema
+
+
+ARQUITECTURA RECOMENDADA
+
+Crear clases base:
+
+`Interactuable`
+`NPC`
+`Trigger`
+`Enemy`
+`Pickup`
+
+Y todo hereda de ahí.
