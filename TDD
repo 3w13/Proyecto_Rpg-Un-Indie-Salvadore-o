@@ -40,12 +40,13 @@ NPCs_EN_GENERAL
     ├─ COMPORTAMIENTO  &Nota: Falta Definir Movimiento &
     ├─ INTERACCIÓN
     ├─ EVENTOS | SEÑALES
-    ├─ ESTADOS
+    ├─ MAQUINA DE ESTADOS
     └─ SCRIPT | CODE
 
 COMPONEENTES
     Estructura de la Escena //Terminado
         CharacterBody2D
+            ├─ Maquina_De_Estados
             ├─ AnimatedSprite2D
             ├─ CollisionShape2D
             └─ Area2D (Interaction)
@@ -97,12 +98,12 @@ CONFIGURACIÓN (Datos)
         - sprite_id (Xpx x Xpx) 22 @Pentiente@
         - animaciones @Pendiente@ &Animaciones de 5 fotogramas&
 
-COMPORTAMIENTO &Nota: Falta Definir Movimiento &
+COMPORTAMIENTO & o logicas&
     Sistema de Movimiento:
-        Logica Base:
+        Logica Base: &Cambio de estado de Estatico => X tipo de movimiento&
             Input:
                 Tipo_movimiento
-                Puntos_ruta &Nota: Depente de Tipo_movimiento&
+                Puntos_ruta &Nota: Depente Del tipo de movimiento &
                 Velocidad
 
             Proceso:
@@ -115,10 +116,11 @@ COMPORTAMIENTO &Nota: Falta Definir Movimiento &
                 Nueva posicion
 
         Reglas:
-            Si tipo ==
+            Si Estado_Actual == Tipo_movimiento
+                iniciar: Tipo_movimiento
 
     Dialogos:
-        Al Interactuar:
+        Al Interactuar: cambiar X estados a Estado_Dialogar
         Input: tecla_interactuar = "E"
 
         Si "dialogo_Unico" se ejecuta
@@ -152,7 +154,7 @@ EVENTOS | SEÑALES
     Guardar_respuesta (Memoria_NPC)
     dialogo_finalizado()
 
-ESTADOS
+ESTADOS Y TRANSICIONES
     Tipos de Estados:
         ESPERA    = Quieto
         CAMINAR   = Movimiento activo
@@ -165,13 +167,22 @@ ESTADOS
         PAUSA → CAMINAR
         (Cualquier Estado) → INTERACTUAR
         INTERACTUAR → ESPERA &Nota: ESPERA podria durar 2 seg antes de cambiar de estado&
+
+    Input de Transiciones:
+        ESPERA => pulsar "w,a,s,d" => CAMINAR
+
+
         
 SCRIPT | CODE @PENDIENTE
     `npc_base.gd`
     `npc_dialogo.gd`
-    `npc_estado.gd`
+    `npc_estado_Actual.gd`
+    `npc_X_estado.gd`
 
 
+
+& APARTIR DE ESTE PUNTO PARA ABAJO ESTA SUJETO A SEGUROS CAMBIOS &
+& NO TOMAR COMO VERSION FINAL, SOLO COMO GUIA PARA DEFINIR&
 📦 C. OBJETOS INTERACTIVOS
 
 Tipos obligatorios:
