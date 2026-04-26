@@ -1,0 +1,162 @@
+[gd_scene format=3 uid="uid://drsl0y23igg8x"]
+
+[ext_resource type="Script" uid="uid://dfbhejh7nhjuf" path="res://scripts/characters/npc/state_machine.gd" id="1_smnp"]
+[ext_resource type="Texture2D" uid="uid://c4by4vnygi5nw" path="res://assets/characters/npc/Tileset_NPC_Panck_01_96x48.png" id="2_mwbxe"]
+[ext_resource type="Script" uid="uid://d1q4c70cis3xi" path="res://scripts/characters/npc/Estados/npc_state_idle.gd" id="3_idln"]
+[ext_resource type="Script" uid="uid://ddkabnyghh8my" path="res://scripts/characters/npc/Estados/npc_state_random_move.gd" id="4_gmuck"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xliyc"]
+atlas = ExtResource("2_mwbxe")
+region = Rect2(576, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jnn5d"]
+atlas = ExtResource("2_mwbxe")
+region = Rect2(624, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6tp67"]
+atlas = ExtResource("2_mwbxe")
+region = Rect2(672, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ssm70"]
+atlas = ExtResource("2_mwbxe")
+region = Rect2(432, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nfbdy"]
+atlas = ExtResource("2_mwbxe")
+region = Rect2(480, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_shhu2"]
+atlas = ExtResource("2_mwbxe")
+region = Rect2(528, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wh8gs"]
+atlas = ExtResource("2_mwbxe")
+region = Rect2(144, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cpw5f"]
+atlas = ExtResource("2_mwbxe")
+region = Rect2(192, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nkdss"]
+atlas = ExtResource("2_mwbxe")
+region = Rect2(240, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2bffm"]
+atlas = ExtResource("2_mwbxe")
+region = Rect2(0, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c7ovw"]
+atlas = ExtResource("2_mwbxe")
+region = Rect2(48, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2ioy1"]
+atlas = ExtResource("2_mwbxe")
+region = Rect2(96, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iotji"]
+atlas = ExtResource("2_mwbxe")
+region = Rect2(288, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d0fjk"]
+atlas = ExtResource("2_mwbxe")
+region = Rect2(336, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3wbxi"]
+atlas = ExtResource("2_mwbxe")
+region = Rect2(384, 0, 48, 96)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8ktms"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xliyc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jnn5d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6tp67")
+}],
+"loop": true,
+"name": &"Abajo",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ssm70")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nfbdy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_shhu2")
+}],
+"loop": true,
+"name": &"Arriba",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wh8gs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cpw5f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nkdss")
+}],
+"loop": true,
+"name": &"Derecha",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2bffm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c7ovw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2ioy1")
+}],
+"loop": true,
+"name": &"Espera",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iotji")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d0fjk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3wbxi")
+}],
+"loop": true,
+"name": &"Izquierda",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0i4kx"]
+size = Vector2(49, 96)
+
+[node name="NPC__01" type="CharacterBody2D" unique_id=1443186076]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=35794637]
+sprite_frames = SubResource("SpriteFrames_8ktms")
+animation = &"Arriba"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1871731304]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_0i4kx")
+
+[node name="NPCStateMachine" type="Node" parent="." unique_id=1804581600 node_paths=PackedStringArray("default_state")]
+script = ExtResource("1_smnp")
+default_state = NodePath("NPCStateIdle")
+
+[node name="NPCStateIdle" type="Node" parent="NPCStateMachine" unique_id=1853947235]
+script = ExtResource("3_idln")
+
+[node name="NPCStateRandomMove" type="Node" parent="NPCStateMachine" unique_id=1601015315]
+script = ExtResource("4_gmuck")

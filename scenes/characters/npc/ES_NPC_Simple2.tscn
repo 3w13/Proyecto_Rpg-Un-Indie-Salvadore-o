@@ -1,0 +1,175 @@
+[gd_scene format=3 uid="uid://dis7gemld2e0t"]
+
+[ext_resource type="Texture2D" uid="uid://c4by4vnygi5nw" path="res://assets/characters/npc/Tileset_NPC_Panck_01_96x48.png" id="2_lldoo"]
+[ext_resource type="Script" uid="uid://dfbhejh7nhjuf" path="res://scripts/characters/npc/state_machine.gd" id="2_oy6q3"]
+[ext_resource type="Script" uid="uid://d3lv0tfr5bbep" path="res://scripts/characters/npc/Estados/npc_state_waiting.gd" id="4_45sxh"]
+[ext_resource type="Script" uid="uid://cyn2v5uwoq8i1" path="res://scripts/characters/npc/Estados/npc_state_patrol.gd" id="4_oy6q3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_scwvu"]
+atlas = ExtResource("2_lldoo")
+region = Rect2(576, 384, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gpwn5"]
+atlas = ExtResource("2_lldoo")
+region = Rect2(624, 384, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sawm8"]
+atlas = ExtResource("2_lldoo")
+region = Rect2(672, 384, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_66x6r"]
+atlas = ExtResource("2_lldoo")
+region = Rect2(528, 384, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_igr02"]
+atlas = ExtResource("2_lldoo")
+region = Rect2(480, 384, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8w567"]
+atlas = ExtResource("2_lldoo")
+region = Rect2(432, 384, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8kg16"]
+atlas = ExtResource("2_lldoo")
+region = Rect2(144, 384, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t55kb"]
+atlas = ExtResource("2_lldoo")
+region = Rect2(192, 384, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fsixe"]
+atlas = ExtResource("2_lldoo")
+region = Rect2(240, 384, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qinqf"]
+atlas = ExtResource("2_lldoo")
+region = Rect2(0, 384, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cbr17"]
+atlas = ExtResource("2_lldoo")
+region = Rect2(48, 384, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_75mpf"]
+atlas = ExtResource("2_lldoo")
+region = Rect2(96, 384, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mvl1d"]
+atlas = ExtResource("2_lldoo")
+region = Rect2(384, 384, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3s0g1"]
+atlas = ExtResource("2_lldoo")
+region = Rect2(336, 384, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0eebc"]
+atlas = ExtResource("2_lldoo")
+region = Rect2(288, 384, 48, 96)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_scwvu"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_scwvu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gpwn5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sawm8")
+}],
+"loop": true,
+"name": &"Abajo",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_66x6r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_igr02")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8w567")
+}],
+"loop": true,
+"name": &"Arriba",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8kg16")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t55kb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fsixe")
+}],
+"loop": true,
+"name": &"Derecha",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qinqf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cbr17")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_75mpf")
+}],
+"loop": true,
+"name": &"Espera",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mvl1d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3s0g1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0eebc")
+}],
+"loop": true,
+"name": &"Izquierda",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gpwn5"]
+size = Vector2(49, 42)
+
+[sub_resource type="Curve2D" id="Curve2D_oy6q3"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 32, 0, 0, 0, 0, 256, 32, 0, 0, 0, 0, 256, 64, 0, 0, 0, 0, -192, 64, 0, 0, 0, 0, -192, 32, 0, 0, 0, 0, 0, 32)
+}
+point_count = 6
+
+[node name="NPC__02" type="CharacterBody2D" unique_id=780138218]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1893667044]
+sprite_frames = SubResource("SpriteFrames_scwvu")
+animation = &"Espera"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1544639028]
+position = Vector2(0.5, 27)
+shape = SubResource("RectangleShape2D_gpwn5")
+
+[node name="PatrolPath" type="Path2D" parent="." unique_id=934772964]
+curve = SubResource("Curve2D_oy6q3")
+
+[node name="NPCStateMachine" type="Node" parent="." unique_id=289074446 node_paths=PackedStringArray("default_state")]
+script = ExtResource("2_oy6q3")
+default_state = NodePath("NpcStatePatrol")
+
+[node name="NpcStatePatrol" type="Node" parent="NPCStateMachine" unique_id=2019410831]
+script = ExtResource("4_oy6q3")
+speed = 250.0
+patrol_path_path = NodePath("PatrolPath")
+
+[node name="NpcStateWaiting" type="Node" parent="NPCStateMachine" unique_id=373609453]
+script = ExtResource("4_45sxh")
+wait_time_min = 1.0
+wait_time_max = 2.0
