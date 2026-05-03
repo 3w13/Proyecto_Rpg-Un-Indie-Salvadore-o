@@ -42,6 +42,7 @@ func start() -> void:
 		state_machine.change_to(next_state)
 
 
+# Al salir del estado cancela espera pendiente y mantiene al NPC detenido.
 func end() -> void:
 	is_waiting = false
 	_stop_npc()
@@ -59,7 +60,7 @@ func _get_next_available_state() -> String:
 
 	var states: Array[NPCStateBase] = []
 	for child in state_machine.get_children():
-		if child is NPCStateBase:
+		if child is NPCStateBase and not child.manual_trigger_only:
 			states.append(child)
 
 	if states.size() <= 1:

@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://chi6m2o36ojt5"
+path="res://.godot/imported/Dialogo_NPC_Simple02.dialogue-bc17fd0901d25a31cab011f7903d0b94.tres"
+
+[deps]
+
+source_file="res://dialogues/Dialogo_NPC_Simple02.dialogue"
+dest_files=["res://.godot/imported/Dialogo_NPC_Simple02.dialogue-bc17fd0901d25a31cab011f7903d0b94.tres"]
+
+[params]
+
+defaults=true

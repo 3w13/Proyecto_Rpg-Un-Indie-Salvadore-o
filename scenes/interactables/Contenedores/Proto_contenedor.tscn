@@ -1,0 +1,73 @@
+[gd_scene format=3 uid="uid://d1y60nql4wtqp"]
+
+[ext_resource type="Texture2D" uid="uid://i62atqk1fm62" path="res://assets/tilesets/Tileset_contenedor.png" id="1_ch8wc"]
+[ext_resource type="Script" uid="uid://cx7c87pwf5ge5" path="res://scripts/interactive/Contenedores/state_machine.gd" id="2_sm1"]
+[ext_resource type="Script" uid="uid://cluyl7xgp6oxq" path="res://scripts/interactive/Contenedores/Estados/container_closed.gd" id="3_cs1"]
+[ext_resource type="Script" uid="uid://c5ndkhh8st13g" path="res://scripts/interactive/Contenedores/Estados/container_open.gd" id="4_os1"]
+[ext_resource type="Script" uid="uid://b7r4p6tdo306e" path="res://scripts/interactive/Contenedores/container_inventory.gd" id="5_inv1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_100fj"]
+atlas = ExtResource("1_ch8wc")
+region = Rect2(0, 96, 144, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ln0j7"]
+atlas = ExtResource("1_ch8wc")
+region = Rect2(0, 0, 144, 96)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_aosxr"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_100fj")
+}],
+"loop": true,
+"name": &"Abierto",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ln0j7")
+}],
+"loop": true,
+"name": &"Cerrado",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ch8wc"]
+size = Vector2(144, 48)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ch8wc"]
+radius = 48.0
+height = 176.0
+
+[node name="Contenedor" type="StaticBody2D" unique_id=1773866897]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=419516186]
+sprite_frames = SubResource("SpriteFrames_aosxr")
+animation = &"Abierto"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=104817489]
+visible = false
+position = Vector2(0, 24)
+shape = SubResource("RectangleShape2D_ch8wc")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=2095794763]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=669401443]
+position = Vector2(0, 16)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_ch8wc")
+
+[node name="ContainerInventory" type="Node" parent="." unique_id=858866474]
+script = ExtResource("5_inv1")
+
+[node name="ContainerStateMachine" type="Node" parent="." unique_id=1666719002]
+script = ExtResource("2_sm1")
+default_state = NodePath("ContainerClosed")
+
+[node name="ContainerClosed" type="Node" parent="ContainerStateMachine" unique_id=486103210]
+script = ExtResource("3_cs1")
+
+[node name="ContainerOpen" type="Node" parent="ContainerStateMachine" unique_id=190972331]
+script = ExtResource("4_os1")

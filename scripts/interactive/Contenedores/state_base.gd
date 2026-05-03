@@ -1,6 +1,17 @@
+## ContainerStateBase
+# Clase base de los estados del contenedor.
+#
+# Proporciona dos referencias comunes:
+# - `controlled_node`: nodo del cofre controlado por el estado.
+# - `state_machine`: máquina de estados que administra las transiciones.
+#
+# Los estados concretos solo sobrescriben los callbacks que necesitan.
 extends Node
 
+# Nodo que controla el estado actual.
 var controlled_node: Node = null
+# Referencia a la máquina de estados del contenedor.
+# Tipo real: ContainerStateMachine (tipado como Node para evitar dependencia circular).
 var state_machine: Node = null
 
 

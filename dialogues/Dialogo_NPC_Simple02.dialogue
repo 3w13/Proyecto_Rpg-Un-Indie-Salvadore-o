@@ -1,0 +1,11 @@
+~ start
+Nathan: [[Hola|Buen Dia|Que Quieres]], Estoy coriendo.
+Nathan: No ves que tengo que siguir.
+- Perdon
+	Nathan: No hay problema solo dejame segir.
+- Es solo un segundo
+	Nathan: A ver dime, que pasa?.
+- A? => start
+- End the conversation => END
+Nathan: Bueno seguire corriendo.
+=> END

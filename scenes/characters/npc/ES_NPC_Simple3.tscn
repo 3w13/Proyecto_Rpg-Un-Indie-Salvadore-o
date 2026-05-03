@@ -3,8 +3,9 @@
 [ext_resource type="Texture2D" uid="uid://c4by4vnygi5nw" path="res://assets/characters/npc/Tileset_NPC_Panck_01_96x48.png" id="1_n6oa8"]
 [ext_resource type="Script" uid="uid://dfbhejh7nhjuf" path="res://scripts/characters/npc/state_machine.gd" id="2_sm3"]
 [ext_resource type="Script" uid="uid://rjp0oralivse" path="res://scripts/characters/npc/Estados/npc_state_dialogue.gd" id="3_dlg3"]
-[ext_resource type="Script" path="res://scripts/characters/npc/npc_interaction_trigger.gd" id="4_itrig"]
+[ext_resource type="Script" uid="uid://d8xhavbcj2ma" path="res://scripts/characters/npc/npc_interaction_trigger.gd" id="4_itrig"]
 [ext_resource type="Script" uid="uid://d1q4c70cis3xi" path="res://scripts/characters/npc/Estados/npc_state_idle.gd" id="5_idle"]
+[ext_resource type="DialogueResource" uid="uid://byp2jtf1nfsq2" path="res://dialogues/Dialogo_NPC_Simple01.dialogue" id="6_dlgres"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1mocl"]
 atlas = ExtResource("1_n6oa8")
@@ -168,11 +169,10 @@ default_state = NodePath("NpcStateIdle")
 
 [node name="NpcStateIdle" type="Node" parent="NPCStateMachine" unique_id=-913043421]
 script = ExtResource("5_idle")
-wait_time_min = 1.0
 wait_time_max = 2.0
+auto_transition_enabled = false
+next_state_name = "NpcStateDialogue"
 
 [node name="NpcStateDialogue" type="Node" parent="NPCStateMachine" unique_id=1409231178]
 script = ExtResource("3_dlg3")
-auto_start_dialogue = true
-dialogue_path = "res://dialogues/Dialogo_NPC_Simple01.dialogue"
-state_after_dialogue = ""
+dialogue_resource = ExtResource("6_dlgres")

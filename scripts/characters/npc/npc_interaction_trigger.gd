@@ -21,6 +21,7 @@ var state_machine: NPCStateMachine = null
 var player_in_range: bool = false
 
 
+# Resuelve nodos requeridos y conecta señales del área de interacción.
 func _ready() -> void:
 	# Obtener la máquina de estados del NPC (nodo hijo del mismo NPC).
 	state_machine = get_node_or_null("NPCStateMachine") as NPCStateMachine
@@ -34,13 +35,17 @@ func _ready() -> void:
 		return
 	
 	# Conectar señales del Area2D para detectar al jugador.
-	if not interaction_area.body_entered.is_connected(_on_area_body_entered):
-		interaction_area.body_entered.connect(_on_area_body_entered)
+	interaction_area.monitoring = true
+	interaction_area.monitorable = true
+
+	if not interaction_area.area_entered.is_connected(_on_interaction_area_entered):
+		interaction_area.area_entered.connect(_on_interaction_area_entered)
 	
-	if not interaction_area.body_exited.is_connected(_on_area_body_exited):
-		interaction_area.body_exited.connect(_on_area_body_exited)
+	if not interaction_area.area_exited.is_connected(_on_interaction_area_exited):
+		interaction_area.area_exited.connect(_on_interaction_area_exited)
 
 
+# Procesa el input para disparar interacción cuando el jugador está en rango.
 func _input(event: InputEvent) -> void:
 	# Solo procesar input E si el jugador está en rango.
 	if not player_in_range:
@@ -51,28 +56,56 @@ func _input(event: InputEvent) -> void:
 		_trigger_dialogue()
 
 
-func _on_area_body_entered(body: Node2D) -> void:
-	# Verificar si es el jugador (asume que el jugador tiene un nombre específico o grupo).
-	if body.name == "Player" or body.is_in_group("player"):
+# Marca entrada del jugador al rango de interacción.
+func _on_interaction_area_entered(area: Area2D) -> void:
+	# Verificar si el área que entra pertenece al jugador (por ejemplo, InteractArea del Player).
+	if _is_player_interaction_area(area):
 		player_in_range = true
 		print("[NPC Interacción] Jugador entra en rango de " + name)
 
 
-func _on_area_body_exited(body: Node2D) -> void:
-	# Verificar si es el jugador.
-	if body.name == "Player" or body.is_in_group("player"):
+# Marca salida del jugador del rango de interacción.
+func _on_interaction_area_exited(area: Area2D) -> void:
+	# Verificar si el área que sale pertenece al jugador.
+	if _is_player_interaction_area(area):
 		player_in_range = false
 		print("[NPC Interacción] Jugador sale del rango de " + name)
 
 
+# Verifica si el área detectada pertenece al player.
+func _is_player_interaction_area(area: Area2D) -> bool:
+	if area == null:
+		return false
+
+	if area.is_in_group("player"):
+		return true
+
+	var owner_node := area.owner
+	if owner_node != null and owner_node.is_in_group("player"):
+		return true
+
+	var parent_node := area.get_parent()
+	if parent_node != null and parent_node.is_in_group("player"):
+		return true
+
+	if area.name == "InteractArea":
+		return true
+
+	return false
+
+
+# Solicita transición del NPC al estado de diálogo configurado.
 func _trigger_dialogue() -> void:
 	# Cambiar al estado de diálogo si la máquina está lista.
 	if state_machine == null:
 		push_warning("NPCInteractionTrigger: state_machine no disponible en " + name)
 		return
+
+	if state_machine.current_state != null and state_machine.current_state.name == dialogue_state_name:
+		return
 	
 	if state_machine.get_node_or_null(dialogue_state_name) == null:
 		push_warning("NPCInteractionTrigger: estado '%s' no encontrado en %s" % [dialogue_state_name, name])
 		return
-	
-	state_machine.change_to(dialogue_state_name)
+
+	state_machine.request_interaction_transition(dialogue_state_name)

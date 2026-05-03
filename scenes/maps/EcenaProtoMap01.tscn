@@ -2,8 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://cby5a1wa5na3e" path="res://assets/tilesets/Grayboxing Map Prototipo.png" id="1_oxuyo"]
 [ext_resource type="PackedScene" uid="uid://bkmnapklb00mv" path="res://scenes/characters/protagonists/EscenaProtopitoPlayer.tscn" id="2_oxuyo"]
-[ext_resource type="PackedScene" uid="uid://dis7gemld2e0t" path="res://scenes/characters/npc/ES_NPC_Simple2.tscn" id="4_7np1c"]
-[ext_resource type="PackedScene" uid="uid://b16hhvsmn4qlm" path="res://scenes/characters/npc/ES_NPC_Simple3.tscn" id="4_oxuyo"]
+[ext_resource type="PackedScene" uid="uid://d1y60nql4wtqp" path="res://scenes/interactables/Contenedores/Proto_contenedor.tscn" id="5_oxuyo"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_na58q"]
 texture = ExtResource("1_oxuyo")
@@ -207,10 +206,7 @@ tile_map_data = PackedByteArray("AAAuAAcAAAACAAQAAAAvAAcAAAACAAQAAAAuAAgAAAACAAQ
 tile_set = SubResource("TileSet_7hln2")
 
 [node name="Player" parent="." unique_id=1673637842 instance=ExtResource("2_oxuyo")]
-position = Vector2(3484, 1078)
+position = Vector2(3120, 720)
 
-[node name="NPC__02" parent="." unique_id=780138218 instance=ExtResource("4_7np1c")]
-position = Vector2(3304, 1200)
-
-[node name="NPC__03" parent="." unique_id=1699157873 instance=ExtResource("4_oxuyo")]
-position = Vector2(3744, 912)
+[node name="Contenedor" parent="." unique_id=687548375 instance=ExtResource("5_oxuyo")]
+position = Vector2(2944, 720)

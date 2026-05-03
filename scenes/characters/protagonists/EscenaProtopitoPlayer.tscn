@@ -4,6 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://dr4iay5w6os3j" path="res://assets/characters/protagonists/Tileset_Player_Panck_01_96x48.png" id="2_p2748"]
 [ext_resource type="Script" uid="uid://csolmm0y63bss" path="res://scripts/characters/protagonists/Estados/player_state_idle.gd" id="3_cdrnd"]
 [ext_resource type="Script" uid="uid://px0p3fbgi0qr" path="res://scripts/characters/protagonists/Estados/player_state_running.gd" id="4_bmtny"]
+[ext_resource type="Script" uid="uid://b8vbn60cjbetb" path="res://scripts/characters/protagonists/Estados/player_state_dialogue.gd" id="5_dlgst"]
+[ext_resource type="Script" uid="uid://bbylkiygae2va" path="res://scripts/characters/protagonists/Estados/player_state_enter_inventory.gd" id="6_invst"]
+[ext_resource type="Script" path="res://scripts/characters/protagonists/player_inventory.gd" id="7_pinv"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_awmgf"]
 atlas = ExtResource("2_p2748")
@@ -52,14 +55,6 @@ region = Rect2(48, 0, 48, 96)
 [sub_resource type="AtlasTexture" id="AtlasTexture_2nslw"]
 atlas = ExtResource("2_p2748")
 region = Rect2(96, 0, 48, 96)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_p2748"]
-atlas = ExtResource("2_p2748")
-region = Rect2(336, 0, 48, 96)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ra0bn"]
-atlas = ExtResource("2_p2748")
-region = Rect2(384, 0, 48, 96)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_nqii5"]
 animations = [{
@@ -114,12 +109,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_2nslw")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_p2748")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ra0bn")
 }],
 "loop": true,
 "name": &"Espera",
@@ -142,7 +131,7 @@ height = 114.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=380918553]
 sprite_frames = SubResource("SpriteFrames_nqii5")
-animation = &"Abajo"
+animation = &"Espera"
 
 [node name="HitboxFisica" type="CollisionShape2D" parent="." unique_id=1031535890]
 position = Vector2(0, 43.5)
@@ -156,6 +145,9 @@ shape = SubResource("RectangleShape2D_2sx8p")
 shape = SubResource("CapsuleShape2D_p2748")
 debug_color = Color(0.37420964, 0.47699052, 1, 0.41960785)
 
+[node name="PlayerInventory" type="Node" parent="."]
+script = ExtResource("7_pinv")
+
 [node name="StateMachine" type="Node" parent="." unique_id=2131722764 node_paths=PackedStringArray("default_state")]
 script = ExtResource("2_awmgf")
 default_state = NodePath("PlayerStateIdle")
@@ -165,3 +157,9 @@ script = ExtResource("3_cdrnd")
 
 [node name="PlayerStateRunning" type="Node" parent="StateMachine" unique_id=503256045]
 script = ExtResource("4_bmtny")
+
+[node name="PlayerStateDialogue" type="Node" parent="StateMachine" unique_id=994286561]
+script = ExtResource("5_dlgst")
+
+[node name="PlayerStateEnterInventory" type="Node" parent="StateMachine" unique_id=1325098714]
+script = ExtResource("6_invst")

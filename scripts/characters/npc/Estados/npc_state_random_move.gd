@@ -35,7 +35,7 @@ func start() -> void:
 #endregion
 
 #region Física
-func on_physics_process(delta: float) -> void:
+func on_physics_process(_delta: float) -> void:
 	var npc := controlled_node as CharacterBody2D
 	if npc == null:
 		return
@@ -67,7 +67,7 @@ func on_physics_process(delta: float) -> void:
 		has_destination = false
 		_stop_npc()
 		if state_machine:
-			state_machine.change_to("NPCStateIdle")
+			_change_to_idle_state()
 #endregion
 
 #region Helpers
@@ -79,5 +79,25 @@ func _generate_random_destination(npc: CharacterBody2D) -> void:
 	)
 	destination = npc.global_position + offset
 	has_destination = true
+
+
+# Intenta volver al estado IDLE probando aliases y búsqueda por script.
+func _change_to_idle_state() -> void:
+	if state_machine == null:
+		return
+
+	var candidates: Array[String] = ["NpcStateIdle", "NPCStateIdle"]
+	for state_name in candidates:
+		if state_machine.get_node_or_null(state_name) != null:
+			state_machine.change_to(state_name)
+			return
+
+	for child in state_machine.get_children():
+		var script_ref: Script = child.get_script() as Script
+		if script_ref == null:
+			continue
+		if script_ref.resource_path.ends_with("npc_state_idle.gd"):
+			state_machine.change_to(child.name)
+			return
 #endregion
 
