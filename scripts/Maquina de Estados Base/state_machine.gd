@@ -62,7 +62,7 @@ func _set_state(next_state: Node) -> void:
 	print("StateMachine:", name, " -> ", current_state.name)
 
 
-	# Reenvía `_process` al estado activo cuando existe.
+# Reenvía `_process` al estado activo cuando existe.
 func _process(delta: float) -> void:
 	if current_state and current_state.has_method("on_process"):
 		current_state.on_process(delta)

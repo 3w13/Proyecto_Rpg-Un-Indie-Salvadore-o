@@ -23,6 +23,10 @@ func start() -> void:
 	var wait_duration := randf_range(wait_time_min, wait_time_max)
 	await get_tree().create_timer(wait_duration).timeout
 
+	# El nodo puede haber sido liberado mientras esperaba (escena descargada, NPC eliminado).
+	if not is_instance_valid(self) or not is_inside_tree():
+		return
+
 	if not is_waiting:
 		return
 	if state_machine == null:
@@ -37,6 +41,8 @@ func start() -> void:
 			# Camino bloqueado: reiniciar el temporizador de espera.
 			var extra_wait := randf_range(wait_time_min, wait_time_max)
 			await get_tree().create_timer(extra_wait).timeout
+			if not is_instance_valid(self) or not is_inside_tree():
+				return
 			if not is_waiting or state_machine == null or state_machine.current_state != self:
 				return
 		state_machine.change_to(next_state)
