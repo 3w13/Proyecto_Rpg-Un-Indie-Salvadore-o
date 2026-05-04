@@ -45,6 +45,10 @@ func start() -> void:
 	if _player_in_range:
 		var transfer_result := _transfer_items_from_player()
 		_close_after_transfer(transfer_result)
+		# Si se transfirió del jugador al contenedor, el cofre ya cambió a CLOSED:
+		# no continuar ejecutando lógica del estado OPEN.
+		if transfer_result == _TRANSFER_PLAYER_TO_CONTAINER:
+			return
 	_close_if_empty()
 	if print_inventory_on_start:
 		print_inventory()
