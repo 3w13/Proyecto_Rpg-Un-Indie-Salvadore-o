@@ -39,6 +39,11 @@ func start() -> void:
 	is_waiting = true
 	var wait_duration = randf_range(wait_time_min, wait_time_max)
 	await get_tree().create_timer(wait_duration).timeout
+
+	# El nodo puede haber salido del árbol mientras esperaba (escena descargada, NPC liberado).
+	if not is_instance_valid(self) or not is_inside_tree():
+		return
+
 	is_waiting = false
 
 	if not auto_transition_enabled:

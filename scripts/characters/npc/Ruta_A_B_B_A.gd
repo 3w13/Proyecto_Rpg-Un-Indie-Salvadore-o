@@ -68,6 +68,10 @@ func _switch_target() -> void:
 	_waiting = true
 	_target = _point_a if _target.is_equal_approx(_point_b) else _point_b
 	await get_tree().create_timer(wait_time).timeout
+	# Verificar que el nodo sigue en el árbol antes de continuar
+	# (puede haber sido liberado mientras esperaba).
+	if not is_instance_valid(self) or not is_inside_tree():
+		return
 	_waiting = false
 
 
