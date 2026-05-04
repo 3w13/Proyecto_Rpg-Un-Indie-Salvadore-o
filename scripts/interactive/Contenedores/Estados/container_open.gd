@@ -50,7 +50,8 @@ func start() -> void:
 		if transfer_result == _TRANSFER_PLAYER_TO_CONTAINER:
 			return
 	_close_if_empty()
-	if print_inventory_on_start:
+	# Solo imprimir el inventario si el estado sigue activo (no transicionó a CLOSED).
+	if print_inventory_on_start and state_machine != null and state_machine.current_state == self:
 		print_inventory()
 
 
