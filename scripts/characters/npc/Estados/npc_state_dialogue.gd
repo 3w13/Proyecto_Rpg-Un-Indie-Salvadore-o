@@ -155,13 +155,14 @@ func _transition_after_dialogue() -> void:
 
 
 # Obtiene el siguiente estado disponible en la máquina de estados (ciclo rotativo).
+# Solo incluye estados que no requieran activación manual (manual_trigger_only = false).
 func _get_next_available_state() -> String:
 	if state_machine == null:
 		return ""
 
 	var states: Array[NPCStateBase] = []
 	for child in state_machine.get_children():
-		if child is NPCStateBase:
+		if child is NPCStateBase and not child.manual_trigger_only:
 			states.append(child)
 
 	if states.size() <= 1:

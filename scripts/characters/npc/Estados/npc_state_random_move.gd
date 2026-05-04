@@ -11,7 +11,7 @@ extends NPCStateBase
 @export var patrol_range: float = 500.0
 
 # Distancia mínima para considerar que llegó al destino.
-@export var arrival_distance: float = 300.0
+@export var arrival_distance: float = 12.0
 
 # Ruta al AnimatedSprite2D del NPC.
 @export var animation_player_path: NodePath = "AnimatedSprite2D"

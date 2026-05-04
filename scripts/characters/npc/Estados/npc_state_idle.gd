@@ -24,6 +24,11 @@ var is_waiting: bool = false
 #endregion
 
 #region Ciclo de vida del estado
+# Al salir del estado cancela cualquier espera pendiente.
+func end() -> void:
+	is_waiting = false
+
+
 func start() -> void:
 	# Al entrar en IDLE: detener y mostrar animación de espera.
 	print("[NPC Estado] IDLE")

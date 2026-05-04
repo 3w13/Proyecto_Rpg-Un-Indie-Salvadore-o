@@ -60,8 +60,9 @@ func _set_state(next_state: Node) -> void:
 	
 	current_state = next_state
 	
-	if current_state.has_method("set"):
+	if "controlled_node" in current_state:
 		current_state.set("controlled_node", controlled_node)
+	if "state_machine" in current_state:
 		current_state.set("state_machine", self)
 	
 	if current_state.has_method("start"):
