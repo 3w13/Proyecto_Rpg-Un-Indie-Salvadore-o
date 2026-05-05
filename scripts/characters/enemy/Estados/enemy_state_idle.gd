@@ -28,6 +28,7 @@ extends EnemyStateBase
 var _is_waiting: bool = false
 var _destination: Vector2 = Vector2.ZERO
 var _has_destination: bool = false
+var _idle_timer: SceneTreeTimer = null
 #endregion
 
 #region Ciclo de vida del estado
@@ -40,6 +41,7 @@ func start() -> void:
 
 func end() -> void:
 	_is_waiting = false
+	_idle_timer = null
 	_stop_enemy()
 #endregion
 
@@ -76,11 +78,12 @@ func on_physics_process(_delta: float) -> void:
 #region Helpers
 func _start_idle_wait() -> void:
 	_is_waiting = true
-	var wait_duration := randf_range(idle_time_min, idle_time_max)
-	get_tree().create_timer(wait_duration).timeout.connect(_on_idle_timer_timeout, CONNECT_ONE_SHOT)
+	_idle_timer = get_tree().create_timer(randf_range(idle_time_min, idle_time_max))
+	_idle_timer.timeout.connect(_on_idle_timer_timeout, CONNECT_ONE_SHOT)
 
 
 func _on_idle_timer_timeout() -> void:
+	_idle_timer = null
 	_is_waiting = false
 	if state_machine == null or state_machine.current_state != self:
 		return
