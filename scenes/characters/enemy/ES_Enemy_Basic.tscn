@@ -1,0 +1,181 @@
+[gd_scene format=3 uid="uid://cmxrq8emn07"]
+
+[ext_resource type="Script" uid="uid://cmxrq8emn01" path="res://scripts/characters/enemy/enemy_state_machine.gd" id="1_enfsm"]
+[ext_resource type="Texture2D" uid="uid://c4by4vnygi5nw" path="res://assets/characters/npc/Tileset_NPC_Panck_01_96x48.png" id="2_enftx"]
+[ext_resource type="Script" uid="uid://cmxrq8emn03" path="res://scripts/characters/enemy/Estados/enemy_state_idle.gd" id="3_enfid"]
+[ext_resource type="Script" uid="uid://cmxrq8emn04" path="res://scripts/characters/enemy/Estados/enemy_state_chase.gd" id="4_enfch"]
+[ext_resource type="Script" uid="uid://cmxrq8emn05" path="res://scripts/characters/enemy/Estados/enemy_state_attack.gd" id="5_enfat"]
+[ext_resource type="Script" uid="uid://cmxrq8emn06" path="res://scripts/characters/enemy/Estados/enemy_state_return.gd" id="6_enfrn"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_enf01"]
+atlas = ExtResource("2_enftx")
+region = Rect2(576, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_enf02"]
+atlas = ExtResource("2_enftx")
+region = Rect2(624, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_enf03"]
+atlas = ExtResource("2_enftx")
+region = Rect2(672, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_enf04"]
+atlas = ExtResource("2_enftx")
+region = Rect2(432, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_enf05"]
+atlas = ExtResource("2_enftx")
+region = Rect2(480, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_enf06"]
+atlas = ExtResource("2_enftx")
+region = Rect2(528, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_enf07"]
+atlas = ExtResource("2_enftx")
+region = Rect2(144, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_enf08"]
+atlas = ExtResource("2_enftx")
+region = Rect2(192, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_enf09"]
+atlas = ExtResource("2_enftx")
+region = Rect2(240, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_enf10"]
+atlas = ExtResource("2_enftx")
+region = Rect2(0, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_enf11"]
+atlas = ExtResource("2_enftx")
+region = Rect2(48, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_enf12"]
+atlas = ExtResource("2_enftx")
+region = Rect2(96, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_enf13"]
+atlas = ExtResource("2_enftx")
+region = Rect2(288, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_enf14"]
+atlas = ExtResource("2_enftx")
+region = Rect2(336, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_enf15"]
+atlas = ExtResource("2_enftx")
+region = Rect2(384, 0, 48, 96)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_enfenm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_enf01")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_enf02")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_enf03")
+}],
+"loop": true,
+"name": &"Abajo",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_enf04")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_enf05")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_enf06")
+}],
+"loop": true,
+"name": &"Arriba",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_enf07")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_enf08")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_enf09")
+}],
+"loop": true,
+"name": &"Derecha",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_enf10")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_enf11")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_enf12")
+}],
+"loop": true,
+"name": &"Espera",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_enf13")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_enf14")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_enf15")
+}],
+"loop": true,
+"name": &"Izquierda",
+"speed": 7.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_enfcol"]
+size = Vector2(32, 20)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_enfdet"]
+radius = 150.0
+
+[node name="EnemyBasic" type="CharacterBody2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2001000001]
+sprite_frames = SubResource("SpriteFrames_enfenm")
+animation = &"Espera"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2001000002]
+position = Vector2(0, 38)
+shape = SubResource("RectangleShape2D_enfcol")
+
+[node name="DetectionArea" type="Area2D" parent="." unique_id=2001000003]
+monitoring = true
+monitorable = false
+
+[node name="DetectionShape" type="CollisionShape2D" parent="DetectionArea" unique_id=2001000004]
+shape = SubResource("CircleShape2D_enfdet")
+debug_color = Color(1, 0.2, 0.2, 0.2)
+
+[node name="EnemyStateMachine" type="Node" parent="." unique_id=2001000005 node_paths=PackedStringArray("default_state")]
+script = ExtResource("1_enfsm")
+default_state = NodePath("EnemyStateIdle")
+
+[node name="EnemyStateIdle" type="Node" parent="EnemyStateMachine" unique_id=2001000006]
+script = ExtResource("3_enfid")
+
+[node name="EnemyStateChase" type="Node" parent="EnemyStateMachine" unique_id=2001000007]
+script = ExtResource("4_enfch")
+
+[node name="EnemyStateAttack" type="Node" parent="EnemyStateMachine" unique_id=2001000008]
+script = ExtResource("5_enfat")
+
+[node name="EnemyStateReturn" type="Node" parent="EnemyStateMachine" unique_id=2001000009]
+script = ExtResource("6_enfrn")
