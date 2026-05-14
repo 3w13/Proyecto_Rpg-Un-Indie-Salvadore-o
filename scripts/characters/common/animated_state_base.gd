@@ -57,8 +57,17 @@ func _get_animated_sprite(animation_player_path: NodePath) -> AnimatedSprite2D:
 
 # Resuelve el nombre efectivo de animación a reproducir.
 # Las subclases pueden sobrescribirlo para aplicar fallback o validaciones extra.
-func _resolve_animation_name(_anim_sprite: AnimatedSprite2D, animation_name: String) -> StringName:
-	return StringName(animation_name)
+func _resolve_animation_name(anim_sprite: AnimatedSprite2D, animation_name: String) -> StringName:
+	if anim_sprite.sprite_frames == null:
+		return StringName()
+
+	var target_animation := StringName(animation_name)
+	if not anim_sprite.sprite_frames.has_animation(target_animation):
+		return StringName()
+	if anim_sprite.sprite_frames.get_frame_count(target_animation) == 0:
+		return StringName()
+
+	return target_animation
 
 
 # Decide si la reproducción debe omitirse.
