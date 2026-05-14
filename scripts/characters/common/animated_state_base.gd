@@ -15,8 +15,8 @@ const ANIMATION_RIGHT: String = "Derecha"
 # Reproduce una animación del `AnimatedSprite2D` controlado por el estado.
 # Las subclases pueden sobrescribir `_resolve_animation_name` y `_should_skip_animation`
 # para ajustar fallback o evitar reinicios innecesarios.
-func _play_animation(animation_player_path: NodePath, animation_name: String, force: bool = false) -> void:
-	var anim_sprite := _get_animated_sprite(animation_player_path)
+func _play_animation(animated_sprite_path: NodePath, animation_name: String, force: bool = false) -> void:
+	var anim_sprite := _get_animated_sprite(animated_sprite_path)
 	if anim_sprite == null:
 		return
 
@@ -44,15 +44,15 @@ func _get_animation_by_direction(direction: Vector2, threshold: float = 0.5) -> 
 
 
 # Reproduce automáticamente la animación basada en la dirección dada.
-func _play_animation_by_direction(animation_player_path: NodePath, direction: Vector2, threshold: float = 0.5, force: bool = false) -> void:
+func _play_animation_by_direction(animated_sprite_path: NodePath, direction: Vector2, threshold: float = 0.5, force: bool = false) -> void:
 	var animation_name := _get_animation_by_direction(direction, threshold)
-	_play_animation(animation_player_path, animation_name, force)
+	_play_animation(animated_sprite_path, animation_name, force)
 
 
-func _get_animated_sprite(animation_player_path: NodePath) -> AnimatedSprite2D:
+func _get_animated_sprite(animated_sprite_path: NodePath) -> AnimatedSprite2D:
 	if controlled_node == null:
 		return null
-	return controlled_node.get_node_or_null(animation_player_path) as AnimatedSprite2D
+	return controlled_node.get_node_or_null(animated_sprite_path) as AnimatedSprite2D
 
 
 # Resuelve el nombre efectivo de animación a reproducir.

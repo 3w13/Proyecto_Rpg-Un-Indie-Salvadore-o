@@ -21,7 +21,8 @@ func end():
 
 
 # Reproduce una animación del `AnimatedSprite2D` del player con fallback a `ANIMATION_IDLE`.
-# Si la animación solicitada no existe o no tiene frames, usa `ANIMATION_IDLE`.
+# Si la animación solicitada no existe o no tiene frames, usa `ANIMATION_IDLE`;
+# si tampoco está disponible, devuelve `StringName()` y no reproduce nada.
 func _resolve_animation_name(anim_sprite: AnimatedSprite2D, animation_name: String) -> StringName:
 	if anim_sprite.sprite_frames == null:
 		return StringName()
