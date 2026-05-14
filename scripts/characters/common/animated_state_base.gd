@@ -70,5 +70,8 @@ func _resolve_animation_name(anim_sprite: AnimatedSprite2D, animation_name: Stri
 
 # Decide si la reproducción debe omitirse.
 # Las subclases pueden sobrescribirlo para evitar reinicios innecesarios o respetar `force`.
-func _should_skip_animation(_anim_sprite: AnimatedSprite2D, _target_animation: StringName, _force: bool) -> bool:
+func _should_skip_animation(anim_sprite: AnimatedSprite2D, target_animation: StringName, force: bool) -> bool:
+	_ = anim_sprite
+	_ = target_animation
+	_ = force
 	return false

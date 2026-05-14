@@ -2,7 +2,7 @@
 # Extiende la base común de animación y añade lógica específica del jugador.
 class_name StateBase extends AnimatedCharacterStateBase
 
-const _FACING_META_KEY: StringName = &"player_facing_direction"
+const FACING_META_KEY: StringName = &"player_facing_direction"
 
 # Referencia a la máquina de estados para poder pedir cambios de estado
 # con state_machine.change_to("NombreEstado").
@@ -45,7 +45,7 @@ func _should_skip_animation(anim_sprite: AnimatedSprite2D, target_animation: Str
 func _set_facing_direction(direction: Vector2) -> void:
 	if direction == Vector2.ZERO or controlled_node == null:
 		return
-	controlled_node.set_meta(_FACING_META_KEY, direction.normalized())
+	controlled_node.set_meta(FACING_META_KEY, direction.normalized())
 
 
 # Recupera la dirección de facing guardada o devuelve `Vector2.DOWN` por defecto.
@@ -53,8 +53,8 @@ func _get_facing_direction() -> Vector2:
 	if controlled_node == null:
 		return Vector2.DOWN
 
-	if controlled_node.has_meta(_FACING_META_KEY):
-		var stored = controlled_node.get_meta(_FACING_META_KEY)
+	if controlled_node.has_meta(FACING_META_KEY):
+		var stored = controlled_node.get_meta(FACING_META_KEY)
 		if stored is Vector2 and stored != Vector2.ZERO:
 			return (stored as Vector2).normalized()
 
