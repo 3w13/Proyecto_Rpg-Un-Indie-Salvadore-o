@@ -14,7 +14,7 @@ const ANIMATION_RIGHT: String = "Derecha"
 # Las subclases pueden sobrescribir `_resolve_animation_name` y `_should_skip_animation`
 # para ajustar fallback o evitar reinicios innecesarios.
 func _play_animation(animation_player_path: NodePath, animation_name: String, force: bool = false) -> void:
-	var anim_sprite := _get_animation_player(animation_player_path)
+	var anim_sprite := _get_animated_sprite(animation_player_path)
 	if anim_sprite == null:
 		return
 
@@ -47,7 +47,7 @@ func _play_animation_by_direction(animation_player_path: NodePath, direction: Ve
 	_play_animation(animation_player_path, animation_name, force)
 
 
-func _get_animation_player(animation_player_path: NodePath) -> AnimatedSprite2D:
+func _get_animated_sprite(animation_player_path: NodePath) -> AnimatedSprite2D:
 	if controlled_node == null:
 		return null
 	return controlled_node.get_node_or_null(animation_player_path) as AnimatedSprite2D
