@@ -1,3 +1,5 @@
+# AnimatedCharacterStateBase: base común para estados de personajes con animación.
+# Centraliza nombres de animación y helpers reutilizables para NPC, enemigo y player.
 class_name AnimatedCharacterStateBase extends Node
 
 const ANIMATION_IDLE: String = "Espera"
