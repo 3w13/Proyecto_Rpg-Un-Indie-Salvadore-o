@@ -62,9 +62,7 @@ func _resolve_animation_name(anim_sprite: AnimatedSprite2D, animation_name: Stri
 		return StringName()
 
 	var target_animation := StringName(animation_name)
-	if not anim_sprite.sprite_frames.has_animation(target_animation):
-		return StringName()
-	if anim_sprite.sprite_frames.get_frame_count(target_animation) == 0:
+	if not anim_sprite.sprite_frames.has_animation(target_animation) or anim_sprite.sprite_frames.get_frame_count(target_animation) == 0:
 		return StringName()
 
 	return target_animation
