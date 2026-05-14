@@ -1,18 +1,8 @@
-# StateBase: clase base que deben extender todos los estados.
-# Define el contrato común: propiedades compartidas y métodos virtuales.
-# Los estados concretos sobreescriben solo los métodos que necesitan.
-class_name StateBase extends Node
-
-const ANIMATION_IDLE: String = "Espera"
-const ANIMATION_UP: String = "Arriba"
-const ANIMATION_DOWN: String = "Abajo"
-const ANIMATION_LEFT: String = "Izquierda"
-const ANIMATION_RIGHT: String = "Derecha"
+# StateBase: clase base que deben extender todos los estados del player.
+# Extiende la base común de animación y añade lógica específica del jugador.
+class_name StateBase extends AnimatedCharacterStateBase
 
 const _FACING_META_KEY: StringName = &"player_facing_direction"
-
-# Nodo que este estado controla (asignado por StateMachine al activarse).
-@onready var controlled_node:Node = self.owner
 
 # Referencia a la máquina de estados para poder pedir cambios de estado
 # con state_machine.change_to("NombreEstado").
@@ -31,43 +21,21 @@ func end():
 
 
 # Reproduce una animación del `AnimatedSprite2D` del player con fallback a `ANIMATION_IDLE`.
-func _play_animation(animation_player_path: NodePath, animation_name: String, force: bool = false) -> void:
-	var anim_sprite := controlled_node.get_node_or_null(animation_player_path) as AnimatedSprite2D
-	if anim_sprite == null:
-		return
-
+func _resolve_animation_name(anim_sprite: AnimatedSprite2D, animation_name: String) -> StringName:
 	if anim_sprite.sprite_frames == null:
-		return
+		return StringName()
 
 	var target_animation := StringName(animation_name)
 	if not anim_sprite.sprite_frames.has_animation(target_animation) or anim_sprite.sprite_frames.get_frame_count(target_animation) == 0:
 		target_animation = StringName(ANIMATION_IDLE)
 		if not anim_sprite.sprite_frames.has_animation(target_animation) or anim_sprite.sprite_frames.get_frame_count(target_animation) == 0:
-			return
+			return StringName()
 
-	if not force and anim_sprite.animation == target_animation and anim_sprite.is_playing():
-		return
-
-	anim_sprite.play(target_animation)
+	return target_animation
 
 
-# Convierte un vector de dirección en el nombre de animación correspondiente.
-func _get_animation_by_direction(direction: Vector2, threshold: float = 0.5) -> String:
-	if direction.x < -threshold:
-		return ANIMATION_LEFT
-	if direction.x > threshold:
-		return ANIMATION_RIGHT
-	if direction.y < -threshold:
-		return ANIMATION_UP
-	if direction.y > threshold:
-		return ANIMATION_DOWN
-	return ANIMATION_IDLE
-
-
-# Reproduce automáticamente la animación basada en la dirección actual.
-func _play_animation_by_direction(animation_player_path: NodePath, direction: Vector2, threshold: float = 0.5, force: bool = false) -> void:
-	var animation_name := _get_animation_by_direction(direction, threshold)
-	_play_animation(animation_player_path, animation_name, force)
+func _should_skip_animation(anim_sprite: AnimatedSprite2D, target_animation: StringName, force: bool) -> bool:
+	return not force and anim_sprite.animation == target_animation and anim_sprite.is_playing()
 
 
 # Guarda en metadata la última dirección válida del player.
