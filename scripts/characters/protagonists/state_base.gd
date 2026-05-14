@@ -21,6 +21,7 @@ func end():
 
 
 # Reproduce una animación del `AnimatedSprite2D` del player con fallback a `ANIMATION_IDLE`.
+# Si la animación solicitada no existe o no tiene frames, usa `ANIMATION_IDLE`.
 func _resolve_animation_name(anim_sprite: AnimatedSprite2D, animation_name: String) -> StringName:
 	if anim_sprite.sprite_frames == null:
 		return StringName()
@@ -33,9 +34,9 @@ func _resolve_animation_name(anim_sprite: AnimatedSprite2D, animation_name: Stri
 
 	return target_animation
 
-
+# Evita reiniciar la misma animación del player cuando ya está reproduciéndose.
+# `force` permite saltarse esta optimización y reiniciar la animación manualmente.
 func _should_skip_animation(anim_sprite: AnimatedSprite2D, target_animation: StringName, force: bool) -> bool:
-	# Evita reiniciar la misma animación si ya se está reproduciendo, salvo que se fuerce.
 	return not force and anim_sprite.animation == target_animation and anim_sprite.is_playing()
 
 

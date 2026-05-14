@@ -55,9 +55,13 @@ func _get_animated_sprite(animation_player_path: NodePath) -> AnimatedSprite2D:
 	return controlled_node.get_node_or_null(animation_player_path) as AnimatedSprite2D
 
 
+# Resuelve el nombre efectivo de animación a reproducir.
+# Las subclases pueden sobrescribirlo para aplicar fallback o validaciones extra.
 func _resolve_animation_name(_anim_sprite: AnimatedSprite2D, animation_name: String) -> StringName:
 	return StringName(animation_name)
 
 
+# Decide si la reproducción debe omitirse.
+# Las subclases pueden sobrescribirlo para evitar reinicios innecesarios o respetar `force`.
 func _should_skip_animation(_anim_sprite: AnimatedSprite2D, _target_animation: StringName, _force: bool) -> bool:
 	return false
