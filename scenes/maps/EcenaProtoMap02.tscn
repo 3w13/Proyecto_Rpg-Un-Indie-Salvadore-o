@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://cby5a1wa5na3e" path="res://assets/tilesets/Grayboxing Map Prototipo.png" id="2_bnalp"]
 [ext_resource type="PackedScene" uid="uid://bkmnapklb00mv" path="res://scenes/characters/protagonists/EscenaProtopitoPlayer.tscn" id="4_157vd"]
-[ext_resource type="Script" uid="uid://cwkm7kaxcbtrx" path="res://scenes/interactables/ScriptPuerta.gd" id="5_v1c5b"]
+[ext_resource type="Script" path="res://scripts/interactive/scene_transition_trigger.gd" id="5_v1c5b"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_v1c5b"]
 texture = ExtResource("2_bnalp")
