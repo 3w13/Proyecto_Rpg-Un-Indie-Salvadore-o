@@ -45,7 +45,7 @@ area_exited.connect(_on_area_exited)
 _set_state(TriggerState.IDLE)
 
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 if transition_mode != TransitionMode.ON_INTERACT:
 return
 
@@ -106,14 +106,16 @@ return
 
 _set_state(TriggerState.COOLDOWN)
 
-var result := get_tree().change_scene_to_file(next_scene_path)
-if result != OK:
-push_warning("ScriptPuerta: no se pudo cambiar a '%s' (error: %s)" % [next_scene_path, str(result)])
-await _run_cooldown()
-if _player_in_range:
-_set_state(TriggerState.PLAYER_IN_RANGE)
-else:
-_set_state(TriggerState.IDLE)
+	var result := get_tree().change_scene_to_file(next_scene_path)
+	if result == OK:
+		return
+
+	push_warning("ScriptPuerta: no se pudo cambiar a '%s' (error: %s)" % [next_scene_path, str(result)])
+	await _run_cooldown()
+	if _player_in_range:
+		_set_state(TriggerState.PLAYER_IN_RANGE)
+	else:
+		_set_state(TriggerState.IDLE)
 
 
 func _run_cooldown() -> void:
@@ -134,13 +136,18 @@ return false
 if body.is_in_group("player"):
 return true
 
-if body.name == "Player":
-return true
+	if body.name == "Player":
+		return true
 
-if body.get_node_or_null("InteractArea") != null:
-return true
+	var owner_node := body.owner
+	if owner_node != null and owner_node.is_in_group("player"):
+		return true
 
-return false
+	var parent_node := body.get_parent()
+	if parent_node != null and parent_node.is_in_group("player"):
+		return true
+
+	return false
 
 
 func _is_player_interaction_area(area: Area2D) -> bool:
