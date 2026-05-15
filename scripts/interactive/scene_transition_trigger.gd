@@ -29,11 +29,15 @@ enum TriggerState {
 
 var _current_state: TriggerState = TriggerState.IDLE
 var _player_in_range: bool = false
+var _fallback_player_node_name_text: String = ""
+var _fallback_player_interact_area_name_text: String = ""
 
 
 func _ready() -> void:
     monitoring = true
-    monitorable = true
+    monitorable = false
+    _fallback_player_node_name_text = String(fallback_player_node_name)
+    _fallback_player_interact_area_name_text = String(fallback_player_interact_area_name)
 
     if not body_entered.is_connected(_on_body_entered):
         body_entered.connect(_on_body_entered)
@@ -144,7 +148,7 @@ func _is_player_body(body: Node) -> bool:
     if body.is_in_group(player_group):
         return true
 
-    if fallback_player_node_name != &"" and body.name == String(fallback_player_node_name):
+    if fallback_player_node_name != &"" and body.name == _fallback_player_node_name_text:
         return true
 
     var owner_node := body.owner
@@ -173,7 +177,7 @@ func _is_player_interaction_area(area: Area2D) -> bool:
     if parent_node != null and parent_node.is_in_group(player_group):
         return true
 
-    if fallback_player_interact_area_name != &"" and area.name == String(fallback_player_interact_area_name):
+    if fallback_player_interact_area_name != &"" and area.name == _fallback_player_interact_area_name_text:
         return true
 
     return false
