@@ -1,14 +1,14 @@
-## ContainerOpen
+## CofreOpen
 # Estado abierto del cofre.
 #
 # Reproduce la animación de apertura y aplica la transferencia bidireccional:
 #   - Player con items + Contenedor vacío  → items pasan de Player a Contenedor.
 #   - Player vacío   + Contenedor con items → items pasan de Contenedor a Player.
 #   - Cualquier otro caso (ambos llenos o ambos vacíos) → no se transfiere nada.
-extends "res://scripts/interactive/Contenedores/state_base.gd"
+extends "res://scripts/interactive/Contenedores/cofre_state_base.gd"
 
 # Clave de metadata usada para recuperar el jugador que abrió el cofre.
-const _INTERACTING_PLAYER_META_KEY: StringName = &"container_interacting_player"
+const _INTERACTING_PLAYER_META_KEY: StringName = &"cofre_interacting_player"
 
 const _TRANSFER_NONE: int = 0
 const _TRANSFER_PLAYER_TO_CONTAINER: int = 1
@@ -19,15 +19,19 @@ const _TRANSFER_CONTAINER_TO_PLAYER: int = 2
 # Acción de input usada para interactuar con el cofre.
 @export var interaction_action: StringName = &"interact"
 # Ruta al `Area2D` que detecta al jugador.
-@export var interaction_area_path: NodePath = NodePath("Area2D")
+@export var interaction_area_path: NodePath = GameConstants.node_container_interaction_area()
 # Ruta al nodo de inventario interno del contenedor.
-@export var inventory_node_path: NodePath = NodePath("ContainerInventory")
+@export var inventory_node_path: NodePath = NodePath("CofreInventory")
 # Estado al que vuelve el contenedor cuando está vacío.
-@export var closed_state_path: NodePath = NodePath("ContainerClosed")
+@export var closed_state_path: NodePath = NodePath("CofreClosed")
 # Ruta al nodo de inventario del jugador dentro de su escena.
 @export var player_inventory_path: NodePath = NodePath("PlayerInventory")
 # Si está activo, imprime en consola el contenido del contenedor al abrirse.
 @export var print_inventory_on_start: bool = true
+
+# Grupo y nombre de área usados para reconocer al player.
+@export var player_group: StringName = GameConstants.group_player()
+@export var player_interact_area_name: StringName = GameConstants.node_player_interact_area_name()
 
 var _interaction_area: Area2D = null
 var _player_in_range: bool = false
@@ -132,14 +136,14 @@ func get_all_items() -> Dictionary:
 	return inventory.get_all_items()
 
 
-# Busca el nodo `ContainerInventory` dentro del contenedor.
+# Busca el nodo `CofreInventory` dentro del contenedor.
 func _get_container_inventory() -> Node:
 	if controlled_node == null:
 		return null
 
 	var inventory := controlled_node.get_node_or_null(inventory_node_path)
 	if inventory == null:
-		push_warning("ContainerOpen: nodo de inventario no encontrado -> " + str(inventory_node_path))
+		push_warning("CofreOpen: nodo de inventario no encontrado -> " + str(inventory_node_path))
 		return null
 
 	return inventory
@@ -230,12 +234,12 @@ func _get_player_inventory() -> Node:
 	if player_node == null:
 		player_node = _get_interacting_player()
 	if player_node == null:
-		push_warning("ContainerOpen: jugador interactuando no encontrado")
+		push_warning("CofreOpen: jugador interactuando no encontrado")
 		return null
 
 	var inventory := player_node.get_node_or_null(player_inventory_path)
 	if inventory == null:
-		push_warning("ContainerOpen: PlayerInventory no encontrado -> " + str(player_inventory_path))
+		push_warning("CofreOpen: PlayerInventory no encontrado -> " + str(player_inventory_path))
 		return null
 
 	return inventory
@@ -256,7 +260,7 @@ func _bind_interaction_area_signals() -> void:
 
 	_interaction_area = controlled_node.get_node_or_null(interaction_area_path) as Area2D
 	if _interaction_area == null:
-		push_warning("ContainerOpen: Area2D no encontrado en " + str(interaction_area_path))
+		push_warning("CofreOpen: Area2D no encontrado en " + str(interaction_area_path))
 		return
 
 	_interaction_area.monitoring = true
@@ -315,18 +319,18 @@ func _is_player_interaction_area(area: Area2D) -> bool:
 	if area == null:
 		return false
 
-	if area.is_in_group("player"):
+	if area.is_in_group(player_group):
 		return true
 
 	var owner_node := area.owner
-	if owner_node != null and owner_node.is_in_group("player"):
+	if owner_node != null and owner_node.is_in_group(player_group):
 		return true
 
 	var parent_node := area.get_parent()
-	if parent_node != null and parent_node.is_in_group("player"):
+	if parent_node != null and parent_node.is_in_group(player_group):
 		return true
 
-	if area.name == "InteractArea":
+	if player_interact_area_name != &"" and area.name == String(player_interact_area_name):
 		return true
 
 	return false

@@ -9,7 +9,13 @@
 extends Node
 
 # Referencia al Area2D que detectará la proximidad del jugador.
-@onready var interaction_area: Area2D = get_node_or_null("InteractionArea")
+@export var interaction_area_path: NodePath = GameConstants.node_npc_interaction_area()
+
+# Grupo y nombre de área usados para reconocer al player.
+@export var player_group: StringName = GameConstants.group_player()
+@export var player_interact_area_name: StringName = GameConstants.node_player_interact_area_name()
+
+@onready var interaction_area: Area2D = get_node_or_null(interaction_area_path)
 
 # Nombre del estado de diálogo en la máquina de estados.
 @export var dialogue_state_name: String = "NpcStateDialogue"
@@ -77,18 +83,18 @@ func _is_player_interaction_area(area: Area2D) -> bool:
 	if area == null:
 		return false
 
-	if area.is_in_group("player"):
+	if area.is_in_group(player_group):
 		return true
 
 	var owner_node := area.owner
-	if owner_node != null and owner_node.is_in_group("player"):
+	if owner_node != null and owner_node.is_in_group(player_group):
 		return true
 
 	var parent_node := area.get_parent()
-	if parent_node != null and parent_node.is_in_group("player"):
+	if parent_node != null and parent_node.is_in_group(player_group):
 		return true
 
-	if area.name == "InteractArea":
+	if player_interact_area_name != &"" and area.name == String(player_interact_area_name):
 		return true
 
 	return false

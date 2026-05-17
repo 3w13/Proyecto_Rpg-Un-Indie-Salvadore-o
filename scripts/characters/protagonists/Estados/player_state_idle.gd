@@ -17,7 +17,7 @@ func start() -> void:
 	if player == null:
 		return
 	player.velocity = Vector2.ZERO
-	_play_animation_by_direction(animation_player_path, _get_facing_direction())
+	_play_animation(animation_player_path, ANIMATION_IDLE, true)
 
 
 # Permanece en reposo y cambia a RUNNING cuando detecta input de movimiento.

@@ -42,6 +42,9 @@ func on_physics_process(_delta: float) -> void:
 		return
 
 	var direction := state_machine.origin_position - enemy.global_position
+	var return_speed := speed
+	if state_machine != null:
+		return_speed = state_machine.get_return_speed(speed)
 
 	# Ya llegó al origen → reanudar IDLE.
 	if direction.length() <= arrival_distance:
@@ -52,7 +55,7 @@ func on_physics_process(_delta: float) -> void:
 
 	# Moverse hacia el origen.
 	var dir_normalized := direction.normalized()
-	enemy.velocity = dir_normalized * speed
+	enemy.velocity = dir_normalized * return_speed
 	enemy.move_and_slide()
 	_play_animation_by_direction(animation_player_path, dir_normalized)
 #endregion

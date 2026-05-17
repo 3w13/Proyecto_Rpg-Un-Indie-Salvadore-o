@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://bhchxhyfbfxey"]
+
+[ext_resource type="Theme" uid="uid://bppfrdemehr17" path="res://resources/ui/theme_box_dialogue.tres" id="1_gx0mo"]
+
+[node name="BoxDialogues" type="CanvasLayer" unique_id=668434535]
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1927430443]
+offset_left = 2.0
+offset_top = -42.0
+offset_right = 178.0
+offset_bottom = 71.0
+theme = ExtResource("1_gx0mo")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=2045157919]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="PanelContainer/MarginContainer" unique_id=1974777139]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="PanelContainer/MarginContainer/GridContainer" unique_id=1397063143]
+layout_mode = 2
+text = "Hastor"
+
+[node name="Dialogue" type="Label" parent="PanelContainer/MarginContainer/GridContainer" unique_id=303661646]
+layout_mode = 2
+text = "Hola"

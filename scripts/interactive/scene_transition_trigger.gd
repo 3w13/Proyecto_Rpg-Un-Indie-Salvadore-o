@@ -22,9 +22,9 @@ enum TriggerState {
 @export var next_scene_path: String = ""
 @export var transition_mode: TransitionMode = TransitionMode.ON_INTERACT
 @export var interaction_action: StringName = &"interact"
-@export var player_group: StringName = &"player"
-@export var fallback_player_node_name: StringName = &"Player"
-@export var fallback_player_interact_area_name: StringName = &"InteractArea"
+@export var player_group: StringName = GameConstants.group_player()
+@export var fallback_player_node_name: StringName = GameConstants.node_player_root_name()
+@export var fallback_player_interact_area_name: StringName = GameConstants.node_player_interact_area_name()
 @export_range(0.0, 10.0, 0.1) var cooldown: float = 0.5
 
 var _current_state: TriggerState = TriggerState.IDLE
@@ -36,6 +36,7 @@ var _fallback_player_interact_area_name_text: String = ""
 func _ready() -> void:
     monitoring = true
     monitorable = false
+    collision_mask = GameConstants.PHYSICS_MASK_PLAYER_PRESENCE
     _fallback_player_node_name_text = String(fallback_player_node_name)
     _fallback_player_interact_area_name_text = String(fallback_player_interact_area_name)
 

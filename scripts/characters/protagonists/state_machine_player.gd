@@ -28,6 +28,7 @@ var _dialogue_manager: Node = null
 
 # Inicializa señales y arranca el estado por defecto al final del frame.
 func _ready():
+	_configure_character_body_physics()
 	# Vincula señales globales y arranca el estado inicial al final del frame.
 	_bind_dialogue_signals()
 	# Se usa call_deferred para esperar a que todos los nodos estén listos.
@@ -133,6 +134,21 @@ func _on_dialogue_ended(_resource) -> void:
 		var default_state_name := String(default_state.name)
 		if get_node_or_null(NodePath(default_state_name)) != null:
 			change_to(default_state_name)
+
+
+# Hook temporal para transición a batalla cuando un enemy alcanza al player.
+func notify_enemy_encounter() -> void:
+	print("Cambio a esena de batalla")
+
+
+func _configure_character_body_physics() -> void:
+	var body := controlled_node as CharacterBody2D
+	if body == null:
+		return
+
+	body.collision_layer = GameConstants.physics_layer_character_body()
+	body.collision_layer = GameConstants.PHYSICS_LAYER_CHARACTER_BODY
+	body.collision_mask = GameConstants.PHYSICS_MASK_WORLD_ONLY
 
 
 #region Delegación de callbacks de Godot al estado activo

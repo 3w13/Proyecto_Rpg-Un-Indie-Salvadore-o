@@ -1,9 +1,9 @@
-## ContainerStateMachine
+## CofreStateMachine
 # Máquina de estados simple para objetos interactivos tipo contenedor.
 #
 # Controla un nodo propietario, activa un estado por defecto y delega los
 # callbacks de Godot al estado actualmente activo.
-class_name ContainerStateMachine extends Node
+class_name CofreStateMachine extends Node
 
 # Ruta al estado inicial de la máquina.
 @export var default_state: NodePath
@@ -29,12 +29,12 @@ func _ready() -> void:
 # Activa el estado configurado como predeterminado.
 func _start_default_state() -> void:
 	if default_state == NodePath(""):
-		push_warning("ContainerStateMachine: default_state no configurado")
+		push_warning("CofreStateMachine: default_state no configurado")
 		return
 	
 	var state := get_node_or_null(default_state)
 	if state == null:
-		push_warning("ContainerStateMachine: default_state inválido -> " + str(default_state))
+		push_warning("CofreStateMachine: default_state inválido -> " + str(default_state))
 		return
 	
 	_set_state(state)
@@ -44,7 +44,7 @@ func _start_default_state() -> void:
 func change_to(state_path: NodePath) -> void:
 	var next_state := get_node_or_null(state_path)
 	if next_state == null:
-		push_warning("ContainerStateMachine: estado no encontrado -> " + str(state_path))
+		push_warning("CofreStateMachine: estado no encontrado -> " + str(state_path))
 		return
 	
 	_set_state(next_state)
@@ -68,7 +68,7 @@ func _set_state(next_state: Node) -> void:
 	if current_state.has_method("start"):
 		current_state.start()
 	
-	print("ContainerStateMachine:", name, " -> ", current_state.name)
+	print("CofreStateMachine:", name, " -> ", current_state.name)
 
 
 # Delegación del callback `_process` al estado activo.

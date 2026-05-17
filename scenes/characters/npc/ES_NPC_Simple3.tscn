@@ -146,7 +146,9 @@ size = Vector2(48, 96)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_interact"]
 size = Vector2(120, 120)
 
-[node name="NPC__03" type="CharacterBody2D" unique_id=1699157873]
+[node name="NPC__03" type="CharacterBody2D" unique_id=1699157873 groups=["npc"]]
+collision_layer = 2
+collision_mask = 1
 script = ExtResource("4_itrig")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1995612]
