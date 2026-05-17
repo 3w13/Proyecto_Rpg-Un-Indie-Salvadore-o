@@ -19,6 +19,7 @@ var _pending_interaction_state: String = ""
 
 # Arranca la máquina diferida para asegurar nodos listos.
 func _ready() -> void:
+	_configure_character_body_physics()
 	# Espera a que todos los nodos estén listos antes de iniciar.
 	call_deferred("_state_default_start")
 
@@ -77,6 +78,15 @@ func _is_interaction_only_state(state_name: String, state_node: NPCStateBase = n
 		return true
 
 	return false
+
+
+func _configure_character_body_physics() -> void:
+	var body := controlled_node as CharacterBody2D
+	if body == null:
+		return
+
+	body.collision_layer = GameConstants.PHYSICS_LAYER_CHARACTER_BODY
+	body.collision_mask = GameConstants.PHYSICS_MASK_WORLD_ONLY
 
 #region Delegación de callbacks al estado activo
 

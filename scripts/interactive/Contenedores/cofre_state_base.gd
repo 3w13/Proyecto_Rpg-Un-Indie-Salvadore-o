@@ -1,4 +1,4 @@
-## ContainerStateBase
+## CofreStateBase
 # Clase base de los estados del contenedor.
 #
 # Proporciona dos referencias comunes:
@@ -11,7 +11,7 @@ extends Node
 # Nodo que controla el estado actual.
 var controlled_node: Node = null
 # Referencia a la máquina de estados del contenedor.
-# Tipo real: ContainerStateMachine (tipado como Node para evitar dependencia circular).
+# Tipo real: CofreStateMachine (tipado como Node para evitar dependencia circular).
 var state_machine: Node = null
 
 

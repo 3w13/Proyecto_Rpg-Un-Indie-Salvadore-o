@@ -1,4 +1,4 @@
-## ContainerInventory
+## CofreInventory
 # Nodo responsable de guardar el contenido interno del cofre/contenedor.
 #
 # Usa la misma API pública que `PlayerInventory` para facilitar la futura
@@ -35,11 +35,11 @@ func send_item(item_id: String, amount: int = 1) -> bool:
 # Agrega una cantidad de un objeto al inventario del contenedor.
 func add_item(item_id: String, amount: int = 1) -> bool:
 	if item_id.strip_edges() == "":
-		push_warning("ContainerInventory: item_id vacío")
+		push_warning("CofreInventory: item_id vacío")
 		return false
 
 	if amount <= 0:
-		push_warning("ContainerInventory: amount debe ser mayor a 0")
+		push_warning("CofreInventory: amount debe ser mayor a 0")
 		return false
 
 	items[item_id] = int(items.get(item_id, 0)) + amount
@@ -51,11 +51,11 @@ func add_item(item_id: String, amount: int = 1) -> bool:
 # Elimina una cantidad de un objeto del contenedor si existe suficiente stock.
 func remove_item(item_id: String, amount: int = 1) -> bool:
 	if item_id.strip_edges() == "":
-		push_warning("ContainerInventory: item_id vacío")
+		push_warning("CofreInventory: item_id vacío")
 		return false
 
 	if amount <= 0:
-		push_warning("ContainerInventory: amount debe ser mayor a 0")
+		push_warning("CofreInventory: amount debe ser mayor a 0")
 		return false
 
 	var current_amount := int(items.get(item_id, 0))

@@ -1,22 +1,26 @@
-## ContainerClosed
+## CofreClosed
 # Estado cerrado del cofre.
 #
 # Mantiene la animación de cerrado, detecta si el jugador está en rango
 # del `Area2D` y, al interactuar, guarda una referencia al jugador para
 # que el estado abierto pueda transferirle el contenido del contenedor.
-extends "res://scripts/interactive/Contenedores/state_base.gd"
+extends "res://scripts/interactive/Contenedores/cofre_state_base.gd"
 
 # Clave de metadata usada para recordar qué jugador abrió el contenedor.
-const _INTERACTING_PLAYER_META_KEY: StringName = &"container_interacting_player"
+const _INTERACTING_PLAYER_META_KEY: StringName = &"cofre_interacting_player"
 
 # Acción de input usada para interactuar con el cofre.
 @export var interaction_action: StringName = &"interact"
 # Estado al que se cambiará cuando el jugador abra el contenedor.
-@export var open_state_path: NodePath = NodePath("ContainerOpen")
+@export var open_state_path: NodePath = NodePath("CofreOpen")
 # Ruta al `Area2D` que detecta al jugador.
-@export var interaction_area_path: NodePath = NodePath("Area2D")
+@export var interaction_area_path: NodePath = GameConstants.node_container_interaction_area()
 # Ruta al sprite animado del contenedor.
 @export var animated_sprite_path: NodePath = NodePath("AnimatedSprite2D")
+
+# Grupo y nombre de área usados para reconocer al player.
+@export var player_group: StringName = GameConstants.group_player()
+@export var player_interact_area_name: StringName = GameConstants.node_player_interact_area_name()
 
 # Referencia al área de interacción ya resuelta.
 var _interaction_area: Area2D = null
@@ -58,7 +62,7 @@ func _bind_interaction_area_signals() -> void:
 
 	_interaction_area = controlled_node.get_node_or_null(interaction_area_path) as Area2D
 	if _interaction_area == null:
-		push_warning("ContainerClosed: Area2D no encontrado en " + str(interaction_area_path))
+		push_warning("CofreClosed: Area2D no encontrado en " + str(interaction_area_path))
 		return
 
 	_interaction_area.monitoring = true
@@ -104,18 +108,18 @@ func _is_player_interaction_area(area: Area2D) -> bool:
 	if area == null:
 		return false
 
-	if area.is_in_group("player"):
+	if area.is_in_group(player_group):
 		return true
 
 	var owner_node := area.owner
-	if owner_node != null and owner_node.is_in_group("player"):
+	if owner_node != null and owner_node.is_in_group(player_group):
 		return true
 
 	var parent_node := area.get_parent()
-	if parent_node != null and parent_node.is_in_group("player"):
+	if parent_node != null and parent_node.is_in_group(player_group):
 		return true
 
-	if area.name == "InteractArea":
+	if player_interact_area_name != &"" and area.name == String(player_interact_area_name):
 		return true
 
 	return false

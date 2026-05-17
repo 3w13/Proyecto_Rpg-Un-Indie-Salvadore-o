@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://drsl0y23igg8x"]
 
-[ext_resource type="Script" uid="uid://dfbhejh7nhjuf" path="res://scripts/characters/npc/state_machine.gd" id="1_smnp"]
+[ext_resource type="Script" uid="uid://dfbhejh7nhjuf" path="res://scripts/characters/npc/state_machine_npc.gd" id="1_smnp"]
 [ext_resource type="Texture2D" uid="uid://c4by4vnygi5nw" path="res://assets/characters/npc/Tileset_NPC_Panck_01_96x48.png" id="2_mwbxe"]
 [ext_resource type="Script" uid="uid://d1q4c70cis3xi" path="res://scripts/characters/npc/Estados/npc_state_idle.gd" id="3_idln"]
 [ext_resource type="Script" uid="uid://ddkabnyghh8my" path="res://scripts/characters/npc/Estados/npc_state_random_move.gd" id="4_gmuck"]
@@ -141,7 +141,8 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0i4kx"]
 size = Vector2(49, 96)
 
-[node name="NPC__01" type="CharacterBody2D" unique_id=1443186076]
+[node name="NPC__01" type="CharacterBody2D" unique_id=1443186076 groups=["npc"]]
+collision_layer = 2
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=35794637]
 sprite_frames = SubResource("SpriteFrames_8ktms")
