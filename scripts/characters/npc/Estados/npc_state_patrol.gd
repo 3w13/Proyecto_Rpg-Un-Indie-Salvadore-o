@@ -113,7 +113,7 @@ func on_physics_process(delta: float) -> void:
 		direction = current_target - npc.global_position
 
 	var movement_direction := direction.normalized()
-	npc.velocity = _get_semi_grid_velocity(movement_direction, movement_segment_px)
+	npc.velocity = _get_semi_grid_velocity(movement_direction, _resolve_movement_segment_px())
 	npc.move_and_slide()
 
 	# Guardar dirección para que WAITING pueda probar si el camino sigue bloqueado.
@@ -190,4 +190,12 @@ func _change_to_waiting_state() -> void:
 		if script_path.ends_with("npc_state_waiting.gd"):
 			state_machine.change_to(child.name)
 			return
+
+
+func _resolve_movement_segment_px() -> float:
+	if movement_segment_px > 0.0:
+		return movement_segment_px
+	if speed <= 0.0:
+		return DEFAULT_MOVEMENT_SEGMENT_PX
+	return max(speed / _get_physics_ticks_per_second(), 0.001)
 #endregion

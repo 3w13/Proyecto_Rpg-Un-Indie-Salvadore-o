@@ -46,9 +46,10 @@ func on_physics_process(_delta: float) -> void:
 	
 	# Calcular dirección hacia el destino.
 	direction = (destination - npc.global_position).normalized()
+	var segment_px := _resolve_movement_segment_px()
 	
 	# Aplicar velocidad hacia el destino.
-	npc.velocity = _get_semi_grid_velocity(direction, movement_segment_px)
+	npc.velocity = _get_semi_grid_velocity(direction, segment_px)
 	
 	# Aplicar física y colisiones.
 	npc.move_and_slide()
@@ -58,7 +59,7 @@ func on_physics_process(_delta: float) -> void:
 	if npc.get_slide_collision_count() > 0:
 		_generate_random_destination(npc)
 		direction = (destination - npc.global_position).normalized()
-		npc.velocity = _get_semi_grid_velocity(direction, movement_segment_px)
+		npc.velocity = _get_semi_grid_velocity(direction, segment_px)
 	
 	# Reproducir animación según dirección.
 	_play_animation_by_direction(animation_player_path, direction)
@@ -100,4 +101,12 @@ func _change_to_idle_state() -> void:
 		if script_ref.resource_path.ends_with("npc_state_idle.gd"):
 			state_machine.change_to(child.name)
 			return
+
+
+func _resolve_movement_segment_px() -> float:
+	if movement_segment_px > 0.0:
+		return movement_segment_px
+	if speed <= 0.0:
+		return DEFAULT_MOVEMENT_SEGMENT_PX
+	return max(speed / _get_physics_ticks_per_second(), 0.001)
 #endregion
