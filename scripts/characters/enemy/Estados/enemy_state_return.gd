@@ -21,10 +21,12 @@ extends EnemyStateBase
 # Ruta al AnimatedSprite2D del enemigo.
 @export var animation_player_path: NodePath = "AnimatedSprite2D"
 #endregion
+var _resolved_movement_segment_px: float = 8.0
 
 #region Ciclo de vida del estado
 func start() -> void:
 	print("[Enemy Estado] RETURN")
+	_resolved_movement_segment_px = _resolve_movement_segment_px(movement_segment_px, speed)
 
 
 func end() -> void:
@@ -53,7 +55,7 @@ func on_physics_process(_delta: float) -> void:
 
 	# Moverse hacia el origen.
 	var dir_normalized := direction.normalized()
-	enemy.velocity = _get_semi_grid_velocity(dir_normalized, _resolve_movement_segment_px(movement_segment_px, speed))
+	enemy.velocity = _get_semi_grid_velocity(dir_normalized, _resolved_movement_segment_px)
 	enemy.move_and_slide()
 	_play_animation_by_direction(animation_player_path, dir_normalized)
 #endregion
