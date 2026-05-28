@@ -52,6 +52,7 @@ var elapsed_patrol_time: float = 0.0
 # Indica si este estado ya fue inicializado al menos una vez.
 # Permite retomar el índice guardado en lugar de buscar el más cercano.
 var _initialized: bool = false
+var _resolved_movement_segment_px: float = 8.0
 #endregion
 
 
@@ -66,6 +67,7 @@ func start() -> void:
 		return
 
 	elapsed_patrol_time = 0.0
+	_resolved_movement_segment_px = _resolve_movement_segment_px(movement_segment_px, speed)
 
 	if not _initialized:
 		has_patrol_points = _load_points_from_path()
@@ -113,8 +115,7 @@ func on_physics_process(delta: float) -> void:
 		direction = current_target - npc.global_position
 
 	var movement_direction := direction.normalized()
-	var segment_px := _resolve_movement_segment_px(movement_segment_px, speed)
-	npc.velocity = _get_semi_grid_velocity(movement_direction, segment_px)
+	npc.velocity = _get_semi_grid_velocity(movement_direction, _resolved_movement_segment_px)
 	npc.move_and_slide()
 
 	# Guardar dirección para que WAITING pueda probar si el camino sigue bloqueado.

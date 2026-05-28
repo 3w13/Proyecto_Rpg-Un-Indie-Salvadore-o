@@ -23,11 +23,13 @@ extends EnemyStateBase
 
 # Evita disparar el encuentro más de una vez mientras este estado esté activo.
 var _battle_requested: bool = false
+var _resolved_movement_segment_px: float = 8.0
 
 #region Ciclo de vida del estado
 func start() -> void:
 	print("[Enemy Estado] CHASE")
 	_battle_requested = false
+	_resolved_movement_segment_px = _resolve_movement_segment_px(movement_segment_px, speed)
 
 
 func end() -> void:
@@ -59,7 +61,7 @@ func on_physics_process(_delta: float) -> void:
 	var player_pos := player_node.global_position
 	# Mover hacia el jugador.
 	var direction := (player_pos - enemy.global_position).normalized()
-	enemy.velocity = _get_semi_grid_velocity(direction, _resolve_movement_segment_px(movement_segment_px, speed))
+	enemy.velocity = _get_semi_grid_velocity(direction, _resolved_movement_segment_px)
 	enemy.move_and_slide()
 	_play_animation_by_direction(animation_player_path, direction)
 #endregion

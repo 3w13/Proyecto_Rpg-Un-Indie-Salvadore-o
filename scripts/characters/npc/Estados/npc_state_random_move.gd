@@ -22,6 +22,7 @@ extends NPCStateBase
 var destination: Vector2 = Vector2.ZERO
 var direction: Vector2 = Vector2.ZERO
 var has_destination: bool = false
+var _resolved_movement_segment_px: float = 8.0
 #endregion
 
 #region Ciclo de vida del estado
@@ -32,6 +33,7 @@ func start() -> void:
 	if npc == null:
 		return
 	
+	_resolved_movement_segment_px = _resolve_movement_segment_px(movement_segment_px, speed)
 	_generate_random_destination(npc)
 #endregion
 
@@ -46,10 +48,9 @@ func on_physics_process(_delta: float) -> void:
 	
 	# Calcular dirección hacia el destino.
 	direction = (destination - npc.global_position).normalized()
-	var segment_px := _resolve_movement_segment_px(movement_segment_px, speed)
 	
 	# Aplicar velocidad hacia el destino.
-	npc.velocity = _get_semi_grid_velocity(direction, segment_px)
+	npc.velocity = _get_semi_grid_velocity(direction, _resolved_movement_segment_px)
 	
 	# Aplicar física y colisiones.
 	npc.move_and_slide()
@@ -59,7 +60,7 @@ func on_physics_process(_delta: float) -> void:
 	if npc.get_slide_collision_count() > 0:
 		_generate_random_destination(npc)
 		direction = (destination - npc.global_position).normalized()
-		npc.velocity = _get_semi_grid_velocity(direction, segment_px)
+		npc.velocity = _get_semi_grid_velocity(direction, _resolved_movement_segment_px)
 	
 	# Reproducir animación según dirección.
 	_play_animation_by_direction(animation_player_path, direction)
