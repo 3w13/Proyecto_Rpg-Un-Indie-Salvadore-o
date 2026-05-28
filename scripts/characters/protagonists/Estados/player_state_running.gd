@@ -5,7 +5,7 @@ extends StateBase
 
 # Tamaño del segmento de movimiento en píxeles.
 @export var movement_segment_px: float = 8.0
-const MIN_FRAME_DELTA: float = 0.000001
+const DEFAULT_PHYSICS_TICKS_PER_SECOND: float = 60.0
 
 # Ruta al nodo AnimatedSprite2D dentro del player (relativa al controlled_node).
 @export var animation_player_path: NodePath = "AnimatedSprite2D"
@@ -45,8 +45,11 @@ func on_physics_process(_delta: float) -> void:
 	
 	# Aplicar movimiento segmentado (pasos de 8 px por frame de física).
 	var movement_step := last_direction * movement_segment_px
-	var frame_delta := max(_delta, MIN_FRAME_DELTA)
-	player.velocity = movement_step / frame_delta
+	var physics_ticks_per_second := float(ProjectSettings.get_setting(
+		"physics/common/physics_ticks_per_second",
+		DEFAULT_PHYSICS_TICKS_PER_SECOND
+	))
+	player.velocity = movement_step * physics_ticks_per_second
 	
 	# Seleccionar y reproducir animación según la dirección dominante.
 	_play_animation_by_direction(animation_player_path, last_direction)
