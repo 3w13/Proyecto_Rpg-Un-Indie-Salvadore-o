@@ -15,6 +15,7 @@ extends NPCStateBase
 #region Exportaciones
 # Velocidad de desplazamiento del NPC en píxeles/segundo.
 @export var speed: float = 120.0
+@export var movement_segment_px: float = 8.0
 
 # Ruta al Path2D que define la trayectoria de patrulla.
 @export var patrol_path_path: NodePath
@@ -112,7 +113,7 @@ func on_physics_process(delta: float) -> void:
 		direction = current_target - npc.global_position
 
 	var movement_direction := direction.normalized()
-	npc.velocity = movement_direction * speed
+	npc.velocity = _get_semi_grid_velocity(movement_direction, movement_segment_px)
 	npc.move_and_slide()
 
 	# Guardar dirección para que WAITING pueda probar si el camino sigue bloqueado.
