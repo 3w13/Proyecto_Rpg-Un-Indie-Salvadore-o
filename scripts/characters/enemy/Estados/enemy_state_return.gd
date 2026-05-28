@@ -5,7 +5,7 @@
 extends EnemyStateBase
 
 #region Exportaciones
-# Velocidad de movimiento al regresar al origen.
+# Deprecated: usar movement_segment_px. Se mantiene por compatibilidad.
 @export var speed: float = 100.0
 @export var movement_segment_px: float = 8.0
 

@@ -4,7 +4,7 @@
 extends EnemyStateBase
 
 #region Exportaciones
-# Velocidad de movimiento al perseguir al jugador.
+# Deprecated: usar movement_segment_px. Se mantiene por compatibilidad.
 @export var speed: float = 150.0
 @export var movement_segment_px: float = 8.0
 
@@ -79,7 +79,7 @@ func _request_battle_transition(player_node: Node) -> void:
 		return
 
 	# Fallback por si aún no existe método en el player.
-	print("Cambio a esena de batalla")
+	print("Cambio a escena de batalla")
 
 
 func _resolve_movement_segment_px() -> float:

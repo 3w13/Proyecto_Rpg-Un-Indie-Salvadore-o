@@ -42,7 +42,7 @@ func on_physics_process(_delta: float) -> void:
 	last_direction = input_direction.normalized()
 	_set_facing_direction(last_direction)
 	
-	# Aplicar movimiento segmentado (pasos de 8 px por frame de física).
+	# Aplicar movimiento segmentado (pasos configurables por physics frame).
 	player.velocity = _get_semi_grid_velocity(last_direction, movement_segment_px)
 	
 	# Seleccionar y reproducir animación según la dirección dominante.
