@@ -46,7 +46,7 @@ func on_physics_process(_delta: float) -> void:
 	
 	# Calcular dirección hacia el destino.
 	direction = (destination - npc.global_position).normalized()
-	var segment_px := _resolve_movement_segment_px()
+	var segment_px := _resolve_movement_segment_px(movement_segment_px, speed)
 	
 	# Aplicar velocidad hacia el destino.
 	npc.velocity = _get_semi_grid_velocity(direction, segment_px)
@@ -101,12 +101,4 @@ func _change_to_idle_state() -> void:
 		if script_ref.resource_path.ends_with("npc_state_idle.gd"):
 			state_machine.change_to(child.name)
 			return
-
-
-func _resolve_movement_segment_px() -> float:
-	if movement_segment_px > 0.0:
-		return movement_segment_px
-	if speed <= 0.0:
-		return DEFAULT_MOVEMENT_SEGMENT_PX
-	return max(speed / _get_physics_ticks_per_second(), 0.001)
 #endregion

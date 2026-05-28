@@ -59,7 +59,7 @@ func on_physics_process(_delta: float) -> void:
 	var player_pos := player_node.global_position
 	# Mover hacia el jugador.
 	var direction := (player_pos - enemy.global_position).normalized()
-	enemy.velocity = _get_semi_grid_velocity(direction, _resolve_movement_segment_px())
+	enemy.velocity = _get_semi_grid_velocity(direction, _resolve_movement_segment_px(movement_segment_px, speed))
 	enemy.move_and_slide()
 	_play_animation_by_direction(animation_player_path, direction)
 #endregion
@@ -80,12 +80,4 @@ func _request_battle_transition(player_node: Node) -> void:
 
 	# Fallback por si aún no existe método en el player.
 	print("Cambio a escena de batalla")
-
-
-func _resolve_movement_segment_px() -> float:
-	if movement_segment_px > 0.0:
-		return movement_segment_px
-	if speed <= 0.0:
-		return DEFAULT_MOVEMENT_SEGMENT_PX
-	return max(speed / _get_physics_ticks_per_second(), 0.001)
 #endregion
