@@ -6,6 +6,7 @@ extends NPCStateBase
 #region Exportaciones
 # Velocidad de movimiento del NPC en píxeles/segundo.
 @export var speed: float = 350.0
+@export var movement_segment_px: float = 8.0
 
 # Rango de generación de destino aleatorio alrededor de la posición actual.
 @export var patrol_range: float = 500.0
@@ -47,7 +48,7 @@ func on_physics_process(_delta: float) -> void:
 	direction = (destination - npc.global_position).normalized()
 	
 	# Aplicar velocidad hacia el destino.
-	npc.velocity = direction * speed
+	npc.velocity = _get_semi_grid_velocity(direction, movement_segment_px)
 	
 	# Aplicar física y colisiones.
 	npc.move_and_slide()
@@ -57,7 +58,7 @@ func on_physics_process(_delta: float) -> void:
 	if npc.get_slide_collision_count() > 0:
 		_generate_random_destination(npc)
 		direction = (destination - npc.global_position).normalized()
-		npc.velocity = direction * speed
+		npc.velocity = _get_semi_grid_velocity(direction, movement_segment_px)
 	
 	# Reproducir animación según dirección.
 	_play_animation_by_direction(animation_player_path, direction)
@@ -100,4 +101,3 @@ func _change_to_idle_state() -> void:
 			state_machine.change_to(child.name)
 			return
 #endregion
-

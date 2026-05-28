@@ -7,6 +7,7 @@ extends EnemyStateBase
 #region Exportaciones
 # Velocidad de movimiento al regresar al origen.
 @export var speed: float = 100.0
+@export var movement_segment_px: float = 8.0
 
 # Distancia mínima al origen para considerar que llegó.
 @export var arrival_distance: float = 10.0
@@ -42,9 +43,6 @@ func on_physics_process(_delta: float) -> void:
 		return
 
 	var direction := state_machine.origin_position - enemy.global_position
-	var return_speed := speed
-	if state_machine != null:
-		return_speed = state_machine.get_return_speed(speed)
 
 	# Ya llegó al origen → reanudar IDLE.
 	if direction.length() <= arrival_distance:
@@ -55,7 +53,7 @@ func on_physics_process(_delta: float) -> void:
 
 	# Moverse hacia el origen.
 	var dir_normalized := direction.normalized()
-	enemy.velocity = dir_normalized * return_speed
+	enemy.velocity = _get_semi_grid_velocity(dir_normalized, movement_segment_px)
 	enemy.move_and_slide()
 	_play_animation_by_direction(animation_player_path, dir_normalized)
 #endregion

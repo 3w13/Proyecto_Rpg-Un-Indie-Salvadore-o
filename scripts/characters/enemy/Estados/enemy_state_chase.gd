@@ -6,6 +6,7 @@ extends EnemyStateBase
 #region Exportaciones
 # Velocidad de movimiento al perseguir al jugador.
 @export var speed: float = 150.0
+@export var movement_segment_px: float = 8.0
 
 # Distancia mínima al jugador para disparar el encuentro de batalla.
 @export var battle_trigger_distance: float = 16.0
@@ -56,13 +57,9 @@ func on_physics_process(_delta: float) -> void:
 		return
 
 	var player_pos := player_node.global_position
-	var chase_speed := speed
-	if state_machine != null:
-		chase_speed = state_machine.get_chase_speed(speed)
-
 	# Mover hacia el jugador.
 	var direction := (player_pos - enemy.global_position).normalized()
-	enemy.velocity = direction * chase_speed
+	enemy.velocity = _get_semi_grid_velocity(direction, movement_segment_px)
 	enemy.move_and_slide()
 	_play_animation_by_direction(animation_player_path, direction)
 #endregion

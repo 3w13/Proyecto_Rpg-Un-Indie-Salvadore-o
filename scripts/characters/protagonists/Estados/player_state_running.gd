@@ -5,22 +5,15 @@ extends StateBase
 
 # Tamaño del segmento de movimiento en píxeles.
 @export var movement_segment_px: float = 8.0
-# Valor por defecto de Godot para física (60 ticks por segundo).
-const DEFAULT_PHYSICS_TICKS_PER_SECOND: float = 60.0
 
 # Ruta al nodo AnimatedSprite2D dentro del player (relativa al controlled_node).
 @export var animation_player_path: NodePath = "AnimatedSprite2D"
 
 # Guarda la última dirección para poder usarla en animaciones o lógica futura.
 var last_direction: Vector2 = Vector2.DOWN
-var _physics_ticks_per_second: float = DEFAULT_PHYSICS_TICKS_PER_SECOND
 
 # Al entrar en RUNNING no requiere inicialización adicional por ahora.
 func start() -> void:
-	_physics_ticks_per_second = float(ProjectSettings.get_setting(
-		"physics/common/physics_ticks_per_second",
-		DEFAULT_PHYSICS_TICKS_PER_SECOND
-	))
 	# Al entrar en RUNNING simplemente registramos el cambio en consola.
 	#print("[Estado] RUNNING")
 	pass
@@ -50,8 +43,7 @@ func on_physics_process(_delta: float) -> void:
 	_set_facing_direction(last_direction)
 	
 	# Aplicar movimiento segmentado (pasos de 8 px por frame de física).
-	var movement_step := last_direction * movement_segment_px
-	player.velocity = movement_step * _physics_ticks_per_second
+	player.velocity = _get_semi_grid_velocity(last_direction, movement_segment_px)
 	
 	# Seleccionar y reproducir animación según la dirección dominante.
 	_play_animation_by_direction(animation_player_path, last_direction)
