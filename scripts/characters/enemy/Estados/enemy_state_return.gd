@@ -55,7 +55,13 @@ func on_physics_process(_delta: float) -> void:
 
 	# Moverse hacia el origen.
 	var dir_normalized := direction.normalized()
-	enemy.velocity = _get_semi_grid_velocity(dir_normalized, _resolved_movement_segment_px)
+	var segment_px := _resolved_movement_segment_px
+	var return_speed := speed
+	if state_machine != null:
+		return_speed = state_machine.get_return_speed(speed)
+	if speed > 0.0:
+		segment_px *= max(return_speed / speed, 0.0)
+	enemy.velocity = _get_semi_grid_velocity(dir_normalized, max(segment_px, SemiGridMovement.MIN_SEGMENT_PX))
 	enemy.move_and_slide()
 	_play_animation_by_direction(animation_player_path, dir_normalized)
 #endregion
