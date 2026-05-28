@@ -4,7 +4,7 @@
 extends NPCStateBase
 
 #region Exportaciones
-# Deprecated: usar movement_segment_px. Se mantiene por compatibilidad.
+# Deprecated: usar movement_segment_px. `speed` se convierte automáticamente a segmentos.
 @export var speed: float = 350.0
 @export var movement_segment_px: float = 8.0
 

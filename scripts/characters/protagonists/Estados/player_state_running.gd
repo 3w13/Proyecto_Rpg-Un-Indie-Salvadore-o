@@ -3,7 +3,7 @@
 # Si se suelta el input, transfiere el control de vuelta a PlayerStateIdle.
 extends StateBase
 
-# Tamaño del segmento de movimiento en píxeles.
+# Tamaño del segmento de movimiento en píxeles por physics tick.
 @export var movement_segment_px: float = 8.0
 
 # Ruta al nodo AnimatedSprite2D dentro del player (relativa al controlled_node).
