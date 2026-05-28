@@ -13,7 +13,7 @@
 extends NPCStateBase
 
 #region Exportaciones
-# Deprecated: usar movement_segment_px. Se mantiene por compatibilidad.
+# Deprecated: usar movement_segment_px. `speed` se convierte automáticamente a segmentos.
 @export var speed: float = 120.0
 @export var movement_segment_px: float = 8.0
 
@@ -113,7 +113,8 @@ func on_physics_process(delta: float) -> void:
 		direction = current_target - npc.global_position
 
 	var movement_direction := direction.normalized()
-	npc.velocity = _get_semi_grid_velocity(movement_direction, _resolve_movement_segment_px(movement_segment_px, speed))
+	var segment_px := _resolve_movement_segment_px(movement_segment_px, speed)
+	npc.velocity = _get_semi_grid_velocity(movement_direction, segment_px)
 	npc.move_and_slide()
 
 	# Guardar dirección para que WAITING pueda probar si el camino sigue bloqueado.
