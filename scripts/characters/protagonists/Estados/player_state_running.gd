@@ -3,8 +3,8 @@
 # Si se suelta el input, transfiere el control de vuelta a PlayerStateIdle.
 extends StateBase
 
-# Velocidad de movimiento en píxeles por segundo.
-@export var speed: float = 200.0
+# Tamaño del segmento de movimiento en píxeles.
+@export var movement_segment_px: float = 8.0
 
 # Ruta al nodo AnimatedSprite2D dentro del player (relativa al controlled_node).
 @export var animation_player_path: NodePath = "AnimatedSprite2D"
@@ -42,11 +42,12 @@ func on_physics_process(_delta: float) -> void:
 	last_direction = input_direction.normalized()
 	_set_facing_direction(last_direction)
 	
-	# Aplicar velocidad al CharacterBody2D.
-	player.velocity = last_direction * speed
+	# Aplicar movimiento segmentado (pasos de 8 px por frame de física).
+	var movement_step := last_direction * movement_segment_px
+	player.velocity = movement_step
 	
 	# Seleccionar y reproducir animación según la dirección dominante.
 	_play_animation_by_direction(animation_player_path, last_direction)
 	
-	# Ejecutar el movimiento con detección de colisiones.
-	player.move_and_slide()
+	# Ejecutar el movimiento segmentado con detección de colisiones.
+	player.move_and_collide(movement_step)
