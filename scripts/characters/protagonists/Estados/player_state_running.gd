@@ -44,10 +44,12 @@ func on_physics_process(_delta: float) -> void:
 	
 	# Aplicar movimiento segmentado (pasos de 8 px por frame de física).
 	var movement_step := last_direction * movement_segment_px
-	player.velocity = movement_step
+	player.velocity = movement_step / max(_delta, 0.0001)
 	
 	# Seleccionar y reproducir animación según la dirección dominante.
 	_play_animation_by_direction(animation_player_path, last_direction)
 	
 	# Ejecutar el movimiento segmentado con detección de colisiones.
-	player.move_and_collide(movement_step)
+	var collision := player.move_and_collide(movement_step)
+	if collision != null:
+		player.velocity = Vector2.ZERO
