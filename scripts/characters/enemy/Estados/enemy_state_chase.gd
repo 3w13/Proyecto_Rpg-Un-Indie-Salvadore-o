@@ -61,7 +61,13 @@ func on_physics_process(_delta: float) -> void:
 	var player_pos := player_node.global_position
 	# Mover hacia el jugador.
 	var direction := (player_pos - enemy.global_position).normalized()
-	enemy.velocity = _get_semi_grid_velocity(direction, _resolved_movement_segment_px)
+	var segment_px := _resolved_movement_segment_px
+	var chase_speed := speed
+	if state_machine != null:
+		chase_speed = state_machine.get_chase_speed(speed)
+	if speed > 0.0:
+		segment_px *= max(chase_speed / speed, 0.0)
+	enemy.velocity = _get_semi_grid_velocity(direction, max(segment_px, SemiGridMovement.MIN_SEGMENT_PX))
 	enemy.move_and_slide()
 	_play_animation_by_direction(animation_player_path, direction)
 #endregion
