@@ -85,4 +85,11 @@ func _get_semi_grid_velocity(direction: Vector2, movement_segment_px: float = DE
 func _resolve_movement_segment_px(movement_segment_px: float, legacy_speed: float = 0.0) -> float:
 	return SemiGridMovement.resolve_segment_px(movement_segment_px, legacy_speed)
 
+
+func _get_scaled_segment_px(base_segment_px: float, base_speed: float, adjusted_speed: float) -> float:
+	if base_speed <= 0.0:
+		return max(base_segment_px, SemiGridMovement.MIN_SEGMENT_PX)
+	var speed_ratio := max(adjusted_speed / base_speed, 0.0)
+	return max(base_segment_px * speed_ratio, SemiGridMovement.MIN_SEGMENT_PX)
+
 #endregion

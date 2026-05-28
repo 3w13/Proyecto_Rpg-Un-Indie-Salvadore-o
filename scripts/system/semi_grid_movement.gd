@@ -2,6 +2,7 @@ class_name SemiGridMovement extends RefCounted
 
 const DEFAULT_PHYSICS_TICKS_PER_SECOND: float = 60.0
 const DEFAULT_MOVEMENT_SEGMENT_PX: float = 8.0
+const MIN_PHYSICS_TICKS_PER_SECOND: float = 0.001
 const MIN_SEGMENT_PX: float = 0.001
 
 static var _physics_ticks_per_second_cache: float = -1.0
@@ -15,6 +16,7 @@ static func get_physics_ticks_per_second() -> float:
 		"physics/common/physics_ticks_per_second",
 		DEFAULT_PHYSICS_TICKS_PER_SECOND
 	))
+	_physics_ticks_per_second_cache = max(_physics_ticks_per_second_cache, MIN_PHYSICS_TICKS_PER_SECOND)
 	return _physics_ticks_per_second_cache
 
 
