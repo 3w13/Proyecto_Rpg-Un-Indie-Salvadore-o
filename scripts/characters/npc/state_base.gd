@@ -7,15 +7,13 @@ const ANIMATION_UP: String = "Arriba"
 const ANIMATION_DOWN: String = "Abajo"
 const ANIMATION_LEFT: String = "Izquierda"
 const ANIMATION_RIGHT: String = "Derecha"
-const DEFAULT_PHYSICS_TICKS_PER_SECOND: float = 60.0
-const DEFAULT_MOVEMENT_SEGMENT_PX: float = 8.0
+const DEFAULT_MOVEMENT_SEGMENT_PX: float = SemiGridMovement.DEFAULT_MOVEMENT_SEGMENT_PX
 
 # Nodo controlado por el estado (normalmente el NPC owner de la máquina).
 @onready var controlled_node: Node = self.owner
 
 # Referencia a la máquina de estados del NPC para poder cambiar de estado.
 var state_machine: NPCStateMachine
-var _physics_ticks_per_second_cache: float = -1.0
 
 # Si es true, este estado no debe activarse por rotación/auto-transición.
 # Solo debería activarse por un disparador explícito (por ejemplo, interacción del jugador).
@@ -68,19 +66,10 @@ func _play_animation_by_direction(animation_player_path: NodePath, dir: Vector2,
 
 # Convierte una dirección en velocidad de semi-grid (segmentos por physics tick).
 func _get_semi_grid_velocity(direction: Vector2, movement_segment_px: float = DEFAULT_MOVEMENT_SEGMENT_PX) -> Vector2:
-	if direction == Vector2.ZERO:
-		return Vector2.ZERO
-	return direction.normalized() * movement_segment_px * _get_physics_ticks_per_second()
+	return SemiGridMovement.direction_to_velocity(direction, movement_segment_px)
 
 
-func _get_physics_ticks_per_second() -> float:
-	if _physics_ticks_per_second_cache > 0.0:
-		return _physics_ticks_per_second_cache
-
-	_physics_ticks_per_second_cache = float(ProjectSettings.get_setting(
-		"physics/common/physics_ticks_per_second",
-		DEFAULT_PHYSICS_TICKS_PER_SECOND
-	))
-	return _physics_ticks_per_second_cache
+func _resolve_movement_segment_px(movement_segment_px: float, legacy_speed: float = 0.0) -> float:
+	return SemiGridMovement.resolve_segment_px(movement_segment_px, legacy_speed)
 
 #endregion
