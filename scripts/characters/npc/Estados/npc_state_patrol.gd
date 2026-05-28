@@ -13,7 +13,7 @@
 extends NPCStateBase
 
 #region Exportaciones
-# Velocidad de desplazamiento del NPC en píxeles/segundo.
+# Deprecated: usar movement_segment_px. Se mantiene por compatibilidad.
 @export var speed: float = 120.0
 @export var movement_segment_px: float = 8.0
 

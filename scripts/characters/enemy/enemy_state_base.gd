@@ -79,7 +79,7 @@ func _play_animation_by_direction(animation_player_path: NodePath, dir: Vector2,
 	_play_animation(animation_player_path, _get_animation_by_direction(dir, threshold))
 
 
-# Convierte una dirección en velocidad de semi-grid (segmentos por tick de física).
+# Convierte una dirección en velocidad de semi-grid (segmentos por physics tick).
 func _get_semi_grid_velocity(direction: Vector2, movement_segment_px: float = DEFAULT_MOVEMENT_SEGMENT_PX) -> Vector2:
 	if direction == Vector2.ZERO:
 		return Vector2.ZERO
