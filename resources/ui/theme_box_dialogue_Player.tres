@@ -1,0 +1,13 @@
+[gd_resource type="Theme" format=3 uid="uid://dpppkctu8y2su"]
+
+[ext_resource type="Texture2D" uid="uid://c5r5sgde1xhr5" path="res://assets/ui/Box_lialogue_Player.png" id="1_lttbc"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jwq37"]
+texture = ExtResource("1_lttbc")
+texture_margin_left = 14.0
+texture_margin_top = 14.0
+texture_margin_right = 30.0
+texture_margin_bottom = 14.0
+
+[resource]
+PanelContainer/styles/panel = SubResource("StyleBoxTexture_jwq37")

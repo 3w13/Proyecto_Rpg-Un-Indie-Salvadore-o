@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cy6itp1dftwow"
-path="res://.godot/imported/Box_Dialogues.png-e8aaab7470bcf3e57f9c1dfc854ddeda.ctex"
+uid="uid://o2c7q14eeuxj"
+path="res://.godot/imported/Chibi Marron.png-170831cf2e051d00935c24ff6e889101.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/Box_Dialogues.png"
-dest_files=["res://.godot/imported/Box_Dialogues.png-e8aaab7470bcf3e57f9c1dfc854ddeda.ctex"]
+source_file="res://assets/characters/protagonists/Chibi Marron.png"
+dest_files=["res://.godot/imported/Chibi Marron.png-170831cf2e051d00935c24ff6e889101.ctex"]
 
 [params]
 

@@ -1,7 +1,8 @@
-[gd_scene format=3 uid="uid://8bvbmep7a4ab"]
+[gd_scene format=3 uid="uid://xlnqqikrwptt"]
 
 [ext_resource type="Script" uid="uid://d1wt4ma6055l8" path="res://addons/dialogue_manager/example_balloon/example_balloon.gd" id="1_4cwdr"]
 [ext_resource type="PackedScene" uid="uid://ckvgyvclnwggo" path="res://addons/dialogue_manager/dialogue_label.tscn" id="2_l0m3f"]
+[ext_resource type="Theme" uid="uid://bppfrdemehr17" path="res://resources/ui/theme_box_dialogue_Npc.tres" id="2_t7hd6"]
 [ext_resource type="Script" uid="uid://bb52rsfwhkxbn" path="res://addons/dialogue_manager/dialogue_responses_menu.gd" id="3_r9a2d"]
 
 [node name="DialogueBalloon" type="CanvasLayer" unique_id=1449931408]
@@ -24,13 +25,13 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 15.0
 offset_top = -156.0
+offset_right = -10.0
+offset_bottom = -38.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_constants/margin_left = 24
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 24
-theme_override_constants/margin_bottom = 12
+theme = ExtResource("2_t7hd6")
 
 [node name="PanelContainer" type="PanelContainer" parent="Balloon/MarginContainer" unique_id=1602235913]
 layout_mode = 2
