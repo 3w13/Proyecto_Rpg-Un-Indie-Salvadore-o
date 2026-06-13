@@ -1,26 +1,179 @@
 [gd_scene format=3 uid="uid://bhchxhyfbfxey"]
 
-[ext_resource type="Theme" uid="uid://bppfrdemehr17" path="res://resources/ui/theme_box_dialogue.tres" id="1_gx0mo"]
+[ext_resource type="Theme" uid="uid://bppfrdemehr17" path="res://resources/ui/theme_box_dialogue_Npc.tres" id="1_gx0mo"]
+[ext_resource type="Script" uid="uid://cqa2johlnfwqe" path="res://scripts/system/box_dialogues.gd" id="2_m4h3f"]
+[ext_resource type="Theme" uid="uid://dpppkctu8y2su" path="res://resources/ui/theme_box_dialogue_Player.tres" id="3_player_theme"]
+
+[sub_resource type="Animation" id="Animation_g6ji7"]
+resource_name = "Boxdialogues_Npc_Entrada"
+length = 0.1
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("NpcPanel:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.099999994),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_u3jfa"]
+resource_name = "Boxdialogues_Npc_Salida"
+length = 0.1
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("NpcPanel:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.099999994),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_nh1th"]
+resource_name = "Boxdialogues_Player_Entrada"
+length = 0.1
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerPanel:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.099999994),
+"transitions": PackedFloat32Array(1.3660403, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_36en5"]
+resource_name = "Boxdialogues_Player_Salida"
+length = 0.1
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerPanel:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.099999994),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0.79607844, 0.79607844, 0.79607844, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_4ktxn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("NpcPanel:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerPanel:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4ktxn"]
+_data = {
+&"Boxdialogues_Npc_Entrada": SubResource("Animation_g6ji7"),
+&"Boxdialogues_Npc_Salida": SubResource("Animation_u3jfa"),
+&"Boxdialogues_Player_Entrada": SubResource("Animation_nh1th"),
+&"Boxdialogues_Player_Salida": SubResource("Animation_36en5"),
+&"RESET": SubResource("Animation_4ktxn")
+}
 
 [node name="BoxDialogues" type="CanvasLayer" unique_id=668434535]
+layer = 10
+script = ExtResource("2_m4h3f")
+dialogue_panel_min_width = 75.0
 
-[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1927430443]
-offset_left = 2.0
-offset_top = -42.0
-offset_right = 178.0
-offset_bottom = 71.0
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1775100201]
+libraries/ = SubResource("AnimationLibrary_4ktxn")
+
+[node name="NpcPanel" type="PanelContainer" parent="." unique_id=1927430443]
+anchors_preset = -1
+anchor_right = 0.025
+anchor_bottom = 0.0625
+offset_left = 441.0
+offset_top = 290.0
+offset_right = 554.00006
+offset_bottom = 352.00012
 theme = ExtResource("1_gx0mo")
+metadata/_edit_use_anchors_ = true
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=2045157919]
+[node name="MarginContainer" type="MarginContainer" parent="NpcPanel" unique_id=2045157919]
 layout_mode = 2
 
-[node name="GridContainer" type="GridContainer" parent="PanelContainer/MarginContainer" unique_id=1974777139]
+[node name="GridContainer" type="GridContainer" parent="NpcPanel/MarginContainer" unique_id=1974777139]
 layout_mode = 2
 
-[node name="Name" type="Label" parent="PanelContainer/MarginContainer/GridContainer" unique_id=1397063143]
+[node name="Name" type="Label" parent="NpcPanel/MarginContainer/GridContainer" unique_id=1397063143]
 layout_mode = 2
-text = "Hastor"
+size_flags_horizontal = 8
+text = "Name"
+horizontal_alignment = 2
 
-[node name="Dialogue" type="Label" parent="PanelContainer/MarginContainer/GridContainer" unique_id=303661646]
+[node name="Dialogue" type="Label" parent="NpcPanel/MarginContainer/GridContainer" unique_id=303661646]
+custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
-text = "Hola"
+text = "Dialogues"
+horizontal_alignment = 2
+autowrap_mode = 2
+
+[node name="PlayerPanel" type="PanelContainer" parent="." unique_id=127664641]
+anchors_preset = -1
+anchor_left = 0.0171875
+anchor_right = 0.0171875
+anchor_bottom = 0.045833334
+offset_left = 592.0
+offset_top = 294.0
+offset_right = 764.0
+offset_bottom = 356.0
+theme = ExtResource("3_player_theme")
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="PlayerPanel" unique_id=438750117]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="PlayerPanel/MarginContainer" unique_id=1235073631]
+layout_direction = 3
+layout_mode = 2
+
+[node name="Name" type="Label" parent="PlayerPanel/MarginContainer/GridContainer" unique_id=383837725]
+layout_mode = 2
+text = "Player"
+
+[node name="Dialogue" type="Label" parent="PlayerPanel/MarginContainer/GridContainer" unique_id=1533482658]
+custom_minimum_size = Vector2(100, 40)
+layout_direction = 3
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Dialogues"
+vertical_alignment = 1
+autowrap_mode = 2

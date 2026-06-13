@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://ct8uwto5mplvl"]
 
 [ext_resource type="Texture2D" uid="uid://i62atqk1fm62" path="res://assets/tilesets/Tileset_contenedor.png" id="1_ch8wc"]
-[ext_resource type="Script" path="res://scripts/interactive/Contenedores/state_machine_container.gd" id="2_sm1"]
-[ext_resource type="Script" path="res://scripts/interactive/Contenedores/Estados/container_closed.gd" id="3_cs1"]
-[ext_resource type="Script" path="res://scripts/interactive/Contenedores/Estados/container_open.gd" id="4_os1"]
-[ext_resource type="Script" path="res://scripts/interactive/Contenedores/container_inventory.gd" id="5_inv1"]
+[ext_resource type="Script" path="res://scripts/interactive/Contenedores/cofre_state_machine.gd" id="2_sm1"]
+[ext_resource type="Script" path="res://scripts/interactive/Contenedores/Estados/cofre_closed.gd" id="3_cs1"]
+[ext_resource type="Script" path="res://scripts/interactive/Contenedores/Estados/cofre_open.gd" id="4_os1"]
+[ext_resource type="Script" path="res://scripts/interactive/Contenedores/cofre_inventory.gd" id="5_inv1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_100fj"]
 atlas = ExtResource("1_ch8wc")

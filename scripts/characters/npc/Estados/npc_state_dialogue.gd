@@ -28,6 +28,9 @@ signal dialogue_finished
 # Si es true, el diálogo arranca al entrar a este estado.
 @export var auto_start_dialogue: bool = true
 
+# Escena de balloon exclusiva para NPC.
+@export_file("*.tscn") var dialogue_balloon_scene_path: String = "res://scenes/ui/Box_Dialogues.tscn"
+
 @export_group("Animación y Estados")
 
 # Nodo del AnimatedSprite2D para animación de espera.
@@ -111,7 +114,7 @@ func trigger_dialogue() -> void:
 		return
 	
 	print("[Diálogo] Mostrando balloon con título: " + title_to_use)
-	var dialogue_balloon: Node = _dialogue_manager.show_dialogue_balloon(_dialogue_resource, title_to_use)
+	var dialogue_balloon: Node = _show_dialogue_balloon_for_npc(title_to_use)
 	if dialogue_balloon != null:
 		if "next_action" in dialogue_balloon:
 			dialogue_balloon.next_action = &"interact"
@@ -155,25 +158,23 @@ func _transition_after_dialogue() -> void:
 
 
 # Obtiene el siguiente estado disponible en la máquina de estados (ciclo rotativo).
-# Solo incluye estados que no requieran activación manual (manual_trigger_only = false).
+# Recorre los hijos reales desde este estado y elige el primero que no requiera activación manual.
 func _get_next_available_state() -> String:
 	if state_machine == null:
 		return ""
 
-	var states: Array[NPCStateBase] = []
-	for child in state_machine.get_children():
-		if child is NPCStateBase and not child.manual_trigger_only:
-			states.append(child)
-
-	if states.size() <= 1:
-		return ""
-
+	var states := state_machine.get_children()
 	var current_index := states.find(self)
-	if current_index == -1:
+	if current_index == -1 or states.size() <= 1:
 		return ""
 
-	var next_index := (current_index + 1) % states.size()
-	return states[next_index].name
+	for offset in range(1, states.size()):
+		var next_index := (current_index + offset) % states.size()
+		var candidate := states[next_index] as NPCStateBase
+		if candidate != null and not candidate.manual_trigger_only:
+			return candidate.name
+
+	return ""
 
 
 # Conecta la señal de finalización del DialogueManager.
@@ -218,3 +219,14 @@ func _get_configured_dialogue_resource() -> DialogueResource:
 
 	print("[Diálogo] Cargando recurso: " + dialogue_path)
 	return load(dialogue_path) as DialogueResource
+
+
+func _show_dialogue_balloon_for_npc(title_to_use: String) -> Node:
+	var extra_game_states: Array = []
+	if controlled_node != null:
+		extra_game_states.append(controlled_node)
+
+	if dialogue_balloon_scene_path.strip_edges() != "" and ResourceLoader.exists(dialogue_balloon_scene_path):
+		return _dialogue_manager.show_dialogue_balloon_scene(dialogue_balloon_scene_path, _dialogue_resource, title_to_use, extra_game_states)
+
+	return _dialogue_manager.show_dialogue_balloon(_dialogue_resource, title_to_use, extra_game_states)
