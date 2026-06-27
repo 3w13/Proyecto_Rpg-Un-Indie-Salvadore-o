@@ -1,0 +1,7 @@
+	var player := controlled_node as CharacterBody2D
+	if player == null:
+		return
+
+	player.velocity = Vector2.ZERO
+	_play_animation(animation_player_path, ANIMATION_IDLE, true)
+

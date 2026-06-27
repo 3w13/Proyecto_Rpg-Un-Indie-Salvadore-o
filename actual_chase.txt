@@ -1,0 +1,3 @@
+	player.move_and_slide()
+	_play_animation(animation_player_path, ANIMATION_IDLE, true)
+	state_machine.change_to("PlayerStateIdle")

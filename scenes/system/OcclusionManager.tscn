@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://ffisskvjhrnk"]
+
+[ext_resource type="Script" uid="uid://djdtcejjtbtvg" path="res://scripts/system/occlusion_manager.gd" id="1_occmgr"]
+
+[node name="OcclusionManager" type="Node" unique_id=1359681373]
+script = ExtResource("1_occmgr")
+detection_radius = 300.0
+min_alpha = 0.0
