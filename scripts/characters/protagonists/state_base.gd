@@ -3,7 +3,10 @@
 # Los estados concretos sobreescriben solo los métodos que necesitan.
 class_name StateBase extends Node
 
-const ANIMATION_IDLE: String = "Espera"
+const ANIMATION_IDLE_DOWN: String = "Espera Abajo"
+const ANIMATION_IDLE_UP: String = "Espera Arriba"
+const ANIMATION_IDLE_LEFT: String = "Espera Izquierda"
+const ANIMATION_IDLE_RIGHT: String = "Espera Derecha"
 const ANIMATION_UP: String = "Arriba"
 const ANIMATION_DOWN: String = "Abajo"
 const ANIMATION_LEFT: String = "Izquierda"
@@ -30,7 +33,7 @@ func end():
 	pass
 
 
-# Reproduce una animación del `AnimatedSprite2D` del player con fallback a `ANIMATION_IDLE`.
+# Reproduce una animación del `AnimatedSprite2D` del player con fallback a `ANIMATION_IDLE_DOWN`.
 func _play_animation(animation_player_path: NodePath, animation_name: String, force: bool = false) -> void:
 	var anim_sprite := controlled_node.get_node_or_null(animation_player_path) as AnimatedSprite2D
 	if anim_sprite == null:
@@ -41,7 +44,7 @@ func _play_animation(animation_player_path: NodePath, animation_name: String, fo
 
 	var target_animation := StringName(animation_name)
 	if not anim_sprite.sprite_frames.has_animation(target_animation) or anim_sprite.sprite_frames.get_frame_count(target_animation) == 0:
-		target_animation = StringName(ANIMATION_IDLE)
+		target_animation = StringName(ANIMATION_IDLE_DOWN)
 		if not anim_sprite.sprite_frames.has_animation(target_animation) or anim_sprite.sprite_frames.get_frame_count(target_animation) == 0:
 			return
 
@@ -61,7 +64,20 @@ func _get_animation_by_direction(direction: Vector2, threshold: float = 0.5) -> 
 		return ANIMATION_UP
 	if direction.y > threshold:
 		return ANIMATION_DOWN
-	return ANIMATION_IDLE
+	return ANIMATION_IDLE_DOWN
+
+
+# Convierte un vector de dirección en el nombre de animación IDLE correspondiente.
+func _get_idle_animation_by_direction(direction: Vector2, threshold: float = 0.5) -> String:
+	if direction.x < -threshold:
+		return ANIMATION_IDLE_LEFT
+	if direction.x > threshold:
+		return ANIMATION_IDLE_RIGHT
+	if direction.y < -threshold:
+		return ANIMATION_IDLE_UP
+	if direction.y > threshold:
+		return ANIMATION_IDLE_DOWN
+	return ANIMATION_IDLE_DOWN
 
 
 # Reproduce automáticamente la animación basada en la dirección actual.

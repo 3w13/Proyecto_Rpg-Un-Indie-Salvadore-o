@@ -1,0 +1,8 @@
+		var target_facing: Vector2 = state_machine.get_follow_target_facing()
+		if target_facing != Vector2.ZERO:
+			_set_facing_direction(_resolve_cardinal_direction(target_facing, target_facing))
+	player.velocity = Vector2.ZERO
+	player.move_and_slide()
+	_play_animation(animation_player_path, ANIMATION_IDLE, true)
+	state_machine.change_to("PlayerStateIdle")
+

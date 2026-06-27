@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://ruabmqnrqnuo"]
+
+[ext_resource type="PackedScene" uid="uid://bkmnapklb00mv" path="res://scenes/characters/protagonists/EscenaChibiRed.tscn" id="1_gpl05"]
+[ext_resource type="PackedScene" uid="uid://bukxq3pxvlnl0" path="res://scenes/characters/protagonists/EscenaChibiBrown.tscn" id="2_3djpl"]
+[ext_resource type="PackedScene" uid="uid://cbi2s5vyly28a" path="res://scenes/characters/protagonists/EscenaChibiBlue.tscn" id="3_3gwnw"]
+[ext_resource type="PackedScene" uid="uid://dq1qeubvngekr" path="res://scenes/characters/protagonists/EscenaChibiPurple.tscn" id="4_mxku6"]
+
+[node name="Escuadra" type="Node2D" unique_id=470088799]
+y_sort_enabled = true
+
+[node name="ChibiRed" parent="." unique_id=1673637842 instance=ExtResource("1_gpl05")]
+stop_distance = 0.5
+resume_distance = 2.5
+catch_up_multiplier = 1.0
+min_record_distance = 4.0
+
+[node name="ChibiBrown" parent="." unique_id=375676123 instance=ExtResource("2_3djpl")]
+position = Vector2(64, 0)
+
+[node name="ChibiBlue" parent="." unique_id=493443686 instance=ExtResource("3_3gwnw")]
+position = Vector2(128, 0)
+
+[node name="ChibiPurple" parent="." unique_id=433462992 instance=ExtResource("4_mxku6")]
+position = Vector2(192, 0)

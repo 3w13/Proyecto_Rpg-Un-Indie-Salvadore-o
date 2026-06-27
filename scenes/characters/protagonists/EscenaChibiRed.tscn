@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://1lj43gc23a5h" path="res://assets/characters/protagonists/Chibi Red.png" id="1_jx680"]
 [ext_resource type="Script" uid="uid://b33iapewqjyjo" path="res://scripts/characters/protagonists/state_machine_player.gd" id="2_awmgf"]
+[ext_resource type="Script" uid="uid://cyggfa5d72dln" path="res://scripts/system/party_follow_controller.gd" id="2_party"]
 [ext_resource type="Script" uid="uid://csolmm0y63bss" path="res://scripts/characters/protagonists/Estados/player_state_idle.gd" id="3_cdrnd"]
 [ext_resource type="Script" uid="uid://px0p3fbgi0qr" path="res://scripts/characters/protagonists/Estados/player_state_running.gd" id="4_bmtny"]
 [ext_resource type="Script" uid="uid://b8vbn60cjbetb" path="res://scripts/characters/protagonists/Estados/player_state_dialogue.gd" id="5_dlgst"]
@@ -71,6 +72,54 @@ region = Rect2(96, 288, 48, 144)
 [sub_resource type="AtlasTexture" id="AtlasTexture_b6epl"]
 atlas = ExtResource("1_jx680")
 region = Rect2(96, 432, 48, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8gwsl"]
+atlas = ExtResource("1_jx680")
+region = Rect2(0, 0, 48, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rd882"]
+atlas = ExtResource("1_jx680")
+region = Rect2(0, 144, 48, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dadu3"]
+atlas = ExtResource("1_jx680")
+region = Rect2(0, 288, 48, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghy7x"]
+atlas = ExtResource("1_jx680")
+region = Rect2(0, 432, 48, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n2gu4"]
+atlas = ExtResource("1_jx680")
+region = Rect2(48, 0, 48, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bgbe7"]
+atlas = ExtResource("1_jx680")
+region = Rect2(48, 144, 48, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4od4j"]
+atlas = ExtResource("1_jx680")
+region = Rect2(48, 288, 48, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cexf8"]
+atlas = ExtResource("1_jx680")
+region = Rect2(48, 432, 48, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jx8k8"]
+atlas = ExtResource("1_jx680")
+region = Rect2(144, 0, 48, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hrijp"]
+atlas = ExtResource("1_jx680")
+region = Rect2(144, 144, 48, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wbovk"]
+atlas = ExtResource("1_jx680")
+region = Rect2(144, 288, 48, 144)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ntsnk"]
+atlas = ExtResource("1_jx680")
+region = Rect2(144, 432, 48, 144)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jx680"]
 atlas = ExtResource("1_jx680")
@@ -155,7 +204,58 @@ animations = [{
 "texture": SubResource("AtlasTexture_b6epl")
 }],
 "loop": true,
-"name": &"Espera",
+"name": &"Espera Abajo",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8gwsl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rd882")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dadu3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghy7x")
+}],
+"loop": true,
+"name": &"Espera Arriba",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n2gu4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bgbe7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4od4j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cexf8")
+}],
+"loop": true,
+"name": &"Espera Derecha",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jx8k8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hrijp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wbovk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ntsnk")
+}],
+"loop": true,
+"name": &"Espera Izquierda",
 "speed": 4.0
 }, {
 "frames": [{
@@ -186,23 +286,24 @@ height = 122.0
 
 [node name="ChibiRed" type="CharacterBody2D" unique_id=1673637842 groups=["player"]]
 collision_layer = 2
+script = ExtResource("2_party")
+resume_distance = 10.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=380918553]
-position = Vector2(0, -14)
+position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_nqii5")
-animation = &"Izquierda"
+animation = &"Espera Izquierda"
 
 [node name="HitboxFisica" type="CollisionShape2D" parent="." unique_id=1031535890]
-visible = false
-position = Vector2(0, 35)
+position = Vector2(0, 40)
 shape = SubResource("CapsuleShape2D_jx680")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=597556336]
 
 [node name="InteractArea" type="Area2D" parent="." unique_id=719811064 groups=["player"]]
-visible = false
 
 [node name="InteractShape" type="CollisionShape2D" parent="InteractArea" unique_id=334287673]
+position = Vector2(0, 8)
 shape = SubResource("CapsuleShape2D_p2748")
 debug_color = Color(0.37420964, 0.47699052, 1, 0.41960785)
 
@@ -218,7 +319,7 @@ script = ExtResource("3_cdrnd")
 
 [node name="PlayerStateRunning" type="Node" parent="StateMachine" unique_id=503256045]
 script = ExtResource("4_bmtny")
-speed = 250.0
+speed = 400.0
 
 [node name="PlayerStateDialogue" type="Node" parent="StateMachine" unique_id=994286561]
 script = ExtResource("5_dlgst")

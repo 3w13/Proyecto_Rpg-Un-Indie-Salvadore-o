@@ -5,6 +5,8 @@ const GROUP_ENEMY: StringName = &"enemy"
 const GROUP_NPC: StringName = &"npc"
 const GROUP_CONTAINER: StringName = &"container"
 const GROUP_INTERACTABLE: StringName = &"interactable"
+const GROUP_WALL: StringName = &"wall"
+const GROUP_STRUCTURE: StringName = &"structure"
 
 const PHYSICS_LAYER_WORLD: int = 1
 const PHYSICS_LAYER_CHARACTER_BODY: int = 1 << 1
@@ -21,6 +23,14 @@ const NODE_CONTAINER_INTERACTION_AREA: NodePath = NodePath("Area2D")
 
 static func group_player() -> StringName:
 	return GROUP_PLAYER
+
+
+static func group_wall() -> StringName:
+	return GROUP_WALL
+
+
+static func group_structure() -> StringName:
+	return GROUP_STRUCTURE
 
 
 static func physics_layer_world() -> int:

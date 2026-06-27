@@ -11,13 +11,16 @@ var speed: float = 200.0
 
 # Al entrar al estado, detiene movimiento y mantiene animación de reposo.
 func start() -> void:
-	# Al entrar en IDLE: detener al jugador y mostrar animación de espera.
+	# Al entrar en IDLE: detener al jugador y mostrar animación de espera según dirección.
 	#print("[Estado] IDLE")
 	var player := controlled_node as CharacterBody2D
 	if player == null:
 		return
 	player.velocity = Vector2.ZERO
-	_play_animation(animation_player_path, ANIMATION_IDLE, true)
+	
+	var facing := _get_facing_direction()
+	var idle_anim := _get_idle_animation_by_direction(facing)
+	_play_animation(animation_player_path, idle_anim, true)
 
 
 # Permanece en reposo y cambia a RUNNING cuando detecta input de movimiento.
@@ -25,6 +28,16 @@ func on_physics_process(_delta: float) -> void:
 	var player := controlled_node as CharacterBody2D
 	if player == null:
 		return
+
+	if state_machine != null and state_machine.has_method("can_start_chase"):
+		var follower_mode: Variant = state_machine.get("is_party_follower")
+		if follower_mode is bool and follower_mode:
+			if state_machine.can_start_chase(player.global_position):
+				state_machine.change_to("PlayerStateChase")
+				return
+			player.velocity = Vector2.ZERO
+			player.move_and_slide()
+			return
 	
 	# Leer input de movimiento en los cuatro ejes.
 	var input_direction := Vector2(

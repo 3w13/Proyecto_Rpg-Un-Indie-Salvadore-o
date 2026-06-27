@@ -30,7 +30,7 @@ func start() -> void:
 		return
 
 	player.velocity = Vector2.ZERO
-	_play_animation(animation_player_path, ANIMATION_IDLE, true)
+	_play_animation(animation_player_path, ANIMATION_IDLE_DOWN, true)
 
 
 # Al salir del estado, asegura que el player quede inmóvil.

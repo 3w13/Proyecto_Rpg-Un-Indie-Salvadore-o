@@ -26,6 +26,20 @@ var _previous_state_before_inventory: String = ""
 # Referencia al singleton de Dialogue Manager.
 var _dialogue_manager: Node = null
 
+var is_party_follower: bool = false
+var _has_follow_target: bool = false
+var _follow_target_position: Vector2 = Vector2.ZERO
+var _follow_target_facing: Vector2 = Vector2.DOWN
+var _follow_target_speed: float = 0.0
+var _follow_target_is_moving: bool = false
+var _party_stop_distance: float = 10.0
+var _party_resume_distance: float = 18.0
+var _party_catch_up_multiplier: float = 1.15
+var _party_stop_confirmation_frames: int = 4
+var _party_resume_confirmation_frames: int = 2
+var _frames_within_stop_distance: int = 0
+var _frames_outside_resume_distance: int = 0
+
 # Inicializa señales y arranca el estado por defecto al final del frame.
 func _ready():
 	_configure_character_body_physics()
@@ -54,11 +68,123 @@ func _state_start() -> void:
 		push_warning("PlayerStateMachine: current_state es null en " + name)
 		return
 
-	#print("PlayerStateMachine ", controlled_node.name, " start state: ", current_state.name)
-
 	current_state.controlled_node = controlled_node
 	current_state.state_machine = self as Node
 	current_state.start()
+
+
+func set_party_follower(is_follower: bool) -> void:
+	is_party_follower = is_follower
+	if not is_node_ready():
+		call_deferred("set_party_follower", is_follower)
+		return
+	if not is_inside_tree():
+		return
+
+	var body := controlled_node as CharacterBody2D
+	if body != null:
+		body.velocity = Vector2.ZERO
+
+	if not is_party_follower:
+		clear_follow_target()
+		_reset_chase_transition_counters()
+		return
+
+	if post_dialogue_state_name != "" and get_node_or_null(post_dialogue_state_name) != null:
+		if current_state == null or String(current_state.name) != post_dialogue_state_name:
+			change_to(post_dialogue_state_name)
+		return
+
+	if current_state == null and default_state != null:
+		current_state = default_state
+		_state_start()
+
+
+func set_party_follow_parameters(stop_distance: float, resume_distance: float, catch_up_multiplier: float) -> void:
+	_party_stop_distance = maxf(stop_distance, 0.0)
+	_party_resume_distance = maxf(resume_distance, _party_stop_distance)
+	_party_catch_up_multiplier = maxf(catch_up_multiplier, 1.0)
+
+
+func set_follow_target(target_position: Vector2, facing_direction: Vector2 = Vector2.DOWN, target_speed: float = 0.0, target_is_moving: bool = false) -> void:
+	_follow_target_position = target_position
+	if facing_direction != Vector2.ZERO:
+		_follow_target_facing = facing_direction.normalized()
+	_follow_target_speed = maxf(target_speed, 0.0)
+	_follow_target_is_moving = target_is_moving
+	_has_follow_target = true
+
+
+func clear_follow_target() -> void:
+	_has_follow_target = false
+	_follow_target_speed = 0.0
+	_follow_target_is_moving = false
+	_reset_chase_transition_counters()
+
+
+func has_follow_target() -> bool:
+	return _has_follow_target
+
+
+func get_follow_target_position() -> Vector2:
+	return _follow_target_position
+
+
+func get_follow_target_facing() -> Vector2:
+	return _follow_target_facing
+
+
+func get_follow_target_speed() -> float:
+	return _follow_target_speed
+
+
+func is_follow_target_moving() -> bool:
+	return _follow_target_is_moving
+
+
+func can_start_chase(from_position: Vector2) -> bool:
+	if not is_party_follower or not _has_follow_target:
+		_frames_outside_resume_distance = 0
+		return false
+
+	_frames_within_stop_distance = 0
+	if from_position.distance_to(_follow_target_position) < _party_resume_distance:
+		_frames_outside_resume_distance = 0
+		return false
+
+	_frames_outside_resume_distance += 1
+	return _frames_outside_resume_distance >= _party_resume_confirmation_frames
+
+
+func should_stop_chase(from_position: Vector2) -> bool:
+	if not _has_follow_target:
+		_frames_within_stop_distance = 0
+		return true
+
+	_frames_outside_resume_distance = 0
+	if from_position.distance_to(_follow_target_position) > _party_stop_distance:
+		_frames_within_stop_distance = 0
+		return false
+
+	_frames_within_stop_distance += 1
+	return _frames_within_stop_distance >= _party_stop_confirmation_frames
+
+
+func get_party_catch_up_multiplier() -> float:
+	return _party_catch_up_multiplier
+
+
+func get_party_stop_distance() -> float:
+	return _party_stop_distance
+
+
+func get_party_resume_distance() -> float:
+	return _party_resume_distance
+
+
+func _reset_chase_transition_counters() -> void:
+	_frames_within_stop_distance = 0
+	_frames_outside_resume_distance = 0
 
 # Cambia al estado solicitado por nombre de nodo hijo.
 func change_to(new_state:String) -> void:
@@ -70,9 +196,14 @@ func change_to(new_state:String) -> void:
 		return
 	if current_state and current_state.has_method("end"):
 		current_state.end()
-	#print("PlayerStateMachine ", controlled_node.name, " cambio de estado: ", current_state.name, " -> ", next.name)
 	current_state = next
 	_state_start()
+
+
+func _get_controlled_node_name() -> String:
+	if controlled_node != null:
+		return String(controlled_node.name)
+	return String(name)
 
 
 # Conecta eventos globales de inicio/fin de diálogo.
@@ -166,16 +297,22 @@ func _physics_process(_delta: float) -> void:
 
 # Reenvía `_input` al estado activo cuando existe.
 func _input(_event:InputEvent) -> void:
+	if is_party_follower:
+		return
 	if current_state and current_state.has_method("on_input"):
 		current_state.on_input(_event)
 
 # Reenvía `_unhandled_input` al estado activo cuando existe.
 func _unhandled_input(_event: InputEvent) -> void:
+	if is_party_follower:
+		return
 	if current_state and current_state.has_method("on_unhandled_input"):
 		current_state.on_unhandled_input(_event)
 
 # Gestiona hotkey de inventario y, si no aplica, reenvía al estado activo.
 func _unhandled_key_input(_event: InputEvent) -> void:
+	if is_party_follower:
+		return
 	# La tecla I tiene prioridad para abrir/cerrar el estado de inventario.
 	if _is_inventory_toggle_event(_event):
 		_toggle_inventory_state()
