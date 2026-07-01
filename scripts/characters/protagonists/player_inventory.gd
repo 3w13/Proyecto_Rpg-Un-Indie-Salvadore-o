@@ -6,28 +6,40 @@
 # y modificarlo mediante su API pública.
 extends Node
 
+
+#region Constantes
+
 # Ruta al archivo .dialogue usado para mostrar mensajes de item recibido.
 const _ITEM_RECEIVED_DIALOGUE: String = "res://dialogues/mensajes de intefaz/Objetos_recojidos.dialogue"
 
+#endregion
+
+
+#region Variables
+
 # Diccionario principal del inventario.
-# Formato esperado: {"nombre_objeto": cantidad}
+# Formato esperado: { "nombre_objeto": cantidad }
 var items: Dictionary = {}
 
-# Último item recibido. Usado por el diálogo de notificación.
+# Datos del último lote de objetos recibidos.
+# Usados por el diálogo de notificación para construir el mensaje.
 var last_received_item: String = ""
-# Última cantidad recibida. Usado por el diálogo de notificación.
 var last_received_amount: int = 0
-# Texto agregado de los últimos objetos recibidos. Usado por el diálogo de notificación.
 var last_received_items_text: String = ""
 
+#endregion
 
-# Alias semántico para recibir objetos desde otros sistemas.
+
+#region API pública
+
+# Alias semántico para recibir un único objeto desde otros sistemas.
 func receive_item(item_id: String, amount: int = 1) -> bool:
 	return receive_items({item_id: amount})
 
 
 # Recibe uno o varios objetos y muestra una sola notificación agregada.
-# Formato esperado: {"nombre_objeto": cantidad}
+# Formato esperado: { "nombre_objeto": cantidad }
+# Ignora entradas con item_id vacío o cantidad <= 0 y avisa en consola.
 func receive_items(received_items: Dictionary) -> bool:
 	if received_items.is_empty():
 		push_warning("PlayerInventory: receive_items recibió un diccionario vacío")
@@ -46,6 +58,7 @@ func receive_items(received_items: Dictionary) -> bool:
 			push_warning("PlayerInventory: amount debe ser mayor a 0 para " + item_id)
 			continue
 
+		# Acumular en caso de que el mismo item_id aparezca más de una vez.
 		normalized_items[item_id] = int(normalized_items.get(item_id, 0)) + amount
 
 	if normalized_items.is_empty():
@@ -63,17 +76,19 @@ func receive_items(received_items: Dictionary) -> bool:
 	return true
 
 
-# Alias semántico para entregar/quitar objetos del inventario.
+# Alias semántico para quitar objetos del inventario.
 func send_item(item_id: String, amount: int = 1) -> bool:
 	return remove_item(item_id, amount)
 
 
-# Agrega una cantidad de un objeto al inventario del jugador.
+# Alias de receive_items para añadir objetos sin mostrar diálogo de notificación.
+# Internamente delega en receive_items, que sí muestra el balloon.
 func add_item(item_id: String, amount: int = 1) -> bool:
 	return receive_items({item_id: amount})
 
 
 # Elimina una cantidad de un objeto si existe suficiente stock.
+# Devuelve false sin modificar el inventario si el stock es insuficiente.
 func remove_item(item_id: String, amount: int = 1) -> bool:
 	if item_id.strip_edges() == "":
 		push_warning("PlayerInventory: item_id vacío")
@@ -89,6 +104,7 @@ func remove_item(item_id: String, amount: int = 1) -> bool:
 		return false
 
 	var updated_amount := current_amount - amount
+	# Si llega a 0, eliminar la entrada del diccionario para mantenerlo limpio.
 	if updated_amount <= 0:
 		items.erase(item_id)
 	else:
@@ -99,25 +115,24 @@ func remove_item(item_id: String, amount: int = 1) -> bool:
 	return true
 
 
-# Verifica si el inventario tiene al menos la cantidad solicitada.
+# Verifica si el inventario tiene al menos la cantidad solicitada de un objeto.
 func has_item(item_id: String, amount: int = 1) -> bool:
 	return get_item_count(item_id) >= amount
 
 
-# Devuelve la cantidad actual de un objeto concreto.
+# Devuelve la cantidad actual de un objeto concreto. Retorna 0 si no existe.
 func get_item_count(item_id: String) -> int:
 	if item_id.strip_edges() == "":
 		return 0
-
 	return int(items.get(item_id, 0))
 
 
-# Devuelve una copia segura de todos los objetos almacenados.
+# Devuelve una copia profunda del inventario para evitar modificaciones externas accidentales.
 func get_all_items() -> Dictionary:
 	return items.duplicate(true)
 
 
-# Borra por completo el contenido del inventario.
+# Vacía el inventario por completo.
 func clear_inventory() -> void:
 	items.clear()
 	print("[Inventario] Limpiado")
@@ -129,11 +144,16 @@ func print_inventory() -> void:
 	if items.is_empty():
 		print("[Inventario] Vacío")
 		return
-
 	print("[Inventario] Objetos actuales: ", items)
 
+#endregion
 
-# Construye los campos de último loot para mostrar un mensaje único y reutilizable.
+
+#region Utilidades internas
+
+# Construye los campos de último lote recibido para reutilizarlos en el diálogo.
+# Si se recibió un solo tipo de objeto, rellena last_received_item y last_received_amount.
+# Si se recibieron varios, deja esos campos vacíos y usa last_received_items_text.
 func _update_last_received_data(received_items: Dictionary) -> void:
 	var sorted_item_ids: Array = received_items.keys()
 	sorted_item_ids.sort()
@@ -151,11 +171,13 @@ func _update_last_received_data(received_items: Dictionary) -> void:
 		last_received_item = String(sorted_item_ids[0])
 		last_received_amount = int(received_items[last_received_item])
 	else:
+		# Lote de varios objetos: no tiene sentido exponer un único item.
 		last_received_item = ""
 		last_received_amount = 0
 
 
-# Muestra el balloon de notificación usando DialogueManager.
+# Muestra el balloon de notificación de objeto recibido usando DialogueManager.
+# Si el singleton o el recurso no están disponibles, falla silenciosamente.
 func _show_item_received_dialogue() -> void:
 	var dm := Engine.get_singleton("DialogueManager")
 	if dm == null:
@@ -167,3 +189,5 @@ func _show_item_received_dialogue() -> void:
 		return
 
 	dm.show_dialogue_balloon(resource, "start", [self])
+
+#endregion
