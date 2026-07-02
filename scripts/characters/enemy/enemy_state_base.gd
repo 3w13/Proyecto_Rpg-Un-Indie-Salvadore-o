@@ -2,20 +2,29 @@
 # Define el contrato común (ciclo de vida, helpers de animación y movimiento).
 class_name EnemyStateBase extends Node
 
-const ANIMATION_IDLE: String = "Espera"
-const ANIMATION_UP: String = "Arriba"
-const ANIMATION_DOWN: String = "Abajo"
-const ANIMATION_LEFT: String = "Izquierda"
+
+#region Constantes de animación
+
+const ANIMATION_IDLE: String  = "Espera"
+const ANIMATION_UP: String    = "Arriba"
+const ANIMATION_DOWN: String  = "Abajo"
+const ANIMATION_LEFT: String  = "Izquierda"
 const ANIMATION_RIGHT: String = "Derecha"
+
+#endregion
+
+
+#region Variables
 
 # Nodo CharacterBody2D controlado por este estado.
 var controlled_node: Node = null
-
 # Referencia a la máquina de estados del enemigo.
 var state_machine: EnemyStateMachine = null
-
 # Referencia al nodo del jugador, asignada por la máquina al detectarlo.
 var player_ref: Node = null
+
+#endregion
+
 
 #region Métodos virtuales — sobreescribir en estados concretos
 
@@ -23,16 +32,13 @@ var player_ref: Node = null
 func start() -> void:
 	pass
 
-
 # Se ejecuta una vez al salir del estado.
 func end() -> void:
 	pass
 
-
 # Callback de proceso por frame (opcional).
 func on_process(_delta: float) -> void:
 	pass
-
 
 # Callback de proceso físico (opcional).
 func on_physics_process(_delta: float) -> void:
@@ -40,9 +46,10 @@ func on_physics_process(_delta: float) -> void:
 
 #endregion
 
+
 #region Helpers reutilizables
 
-# Detiene por completo al enemigo.
+# Detiene por completo al enemigo: velocidad a cero y aplica física.
 func _stop_enemy() -> void:
 	var enemy := controlled_node as CharacterBody2D
 	if enemy == null:
@@ -51,14 +58,16 @@ func _stop_enemy() -> void:
 	enemy.move_and_slide()
 
 
-# Reproduce la animación indicada del AnimatedSprite2D del enemigo.
+# Reproduce la animación indicada en el AnimatedSprite2D del enemigo.
+# No hace fallback: si la animación no existe, AnimatedSprite2D lanzará un error.
 func _play_animation(animation_player_path: NodePath, animation_name: String) -> void:
 	var anim_sprite := controlled_node.get_node_or_null(animation_player_path) as AnimatedSprite2D
 	if anim_sprite:
 		anim_sprite.play(animation_name)
 
 
-# Devuelve el nombre de animación según la dirección de movimiento.
+# Devuelve el nombre de animación cardinal según la dirección de movimiento.
+# Usa threshold para determinar el eje dominante. Por defecto devuelve ANIMATION_IDLE.
 func _get_animation_by_direction(dir: Vector2, threshold: float = 0.5) -> String:
 	if dir.x < -threshold:
 		return ANIMATION_LEFT
@@ -71,7 +80,7 @@ func _get_animation_by_direction(dir: Vector2, threshold: float = 0.5) -> String
 	return ANIMATION_IDLE
 
 
-# Reproduce la animación direccional resultante.
+# Atajo que combina _get_animation_by_direction y _play_animation en una sola llamada.
 func _play_animation_by_direction(animation_player_path: NodePath, dir: Vector2, threshold: float = 0.5) -> void:
 	_play_animation(animation_player_path, _get_animation_by_direction(dir, threshold))
 
