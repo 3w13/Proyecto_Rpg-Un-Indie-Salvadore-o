@@ -1,4 +1,4 @@
-## SceneTransitionTrigger
+  ## SceneTransitionTrigger
 # Trigger reutilizable para cambio de escenas desde un Area2D.
 #
 # Modos soportados:
